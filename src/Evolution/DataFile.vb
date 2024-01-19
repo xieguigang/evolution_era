@@ -5,6 +5,7 @@ Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Components
+Imports SMRUCC.Rsharp.Runtime.Internal.[Object]
 Imports SMRUCC.Rsharp.Runtime.Interop
 
 <Package("Analysis")>
@@ -31,6 +32,21 @@ Public Module DataFile
     <ExportAPI("population_size")>
     Public Function population_size(file As DataReader) As Object
         Return file.GetPopulateSize
+    End Function
+
+    <ExportAPI("biology_abundance")>
+    Public Function biologyCharacterAbundance(file As DataReader) As Object
+        Dim df As New dataframe With {.columns = New Dictionary(Of String, Array)}
+
+        For Each type As BiologyCharacters In Enums(Of BiologyCharacters)()
+            If type = BiologyCharacters.None Then
+                Continue For
+            End If
+
+            Call df.add()
+        Next
+
+        Return df
     End Function
 
 End Module

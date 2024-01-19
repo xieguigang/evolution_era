@@ -3,7 +3,7 @@
     Public ReadOnly Property Character As BiologyCharacters
     Public Property Level As Double
 
-    Friend Shared ReadOnly all_characters As BiologyCharacters() = Enums(Of BiologyCharacters)()
+    Public Shared ReadOnly all_characters As IReadOnlyCollection(Of BiologyCharacters) = Enums(Of BiologyCharacters)()
 
     ''' <summary>
     ''' make a new copy
