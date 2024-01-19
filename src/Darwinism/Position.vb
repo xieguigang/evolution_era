@@ -19,6 +19,11 @@ Public Class Position : Implements IPoint3D
         End If
     End Sub
 
+    Public Overrides Function ToString() As String
+        Dim label As String = If(Creature Is Nothing, "", Creature.ToString)
+        Return $"{label} - {Geography.Description} ({X},{Y},{Z})"
+    End Function
+
     Public Sub TryMoveTo(another As Position, nearby As Position(), world As WorldParameters)
         If TestMove(another, Creature) Then
             Call DoMove(another, nearby, world)

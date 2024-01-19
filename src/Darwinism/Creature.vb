@@ -35,6 +35,10 @@ Public Class Creature
         heredity = Empty(capacity).ToArray
     End Sub
 
+    Public Overrides Function ToString() As String
+        Return $"{guid} - {index.Keys.Select(Function(c) c.Description).JoinBy(",")}"
+    End Function
+
     Public Shared Iterator Function Empty(capacity As Integer) As IEnumerable(Of BiologyCharacter)
         For i As Integer = 0 To capacity - 1
             Yield New BiologyCharacter()

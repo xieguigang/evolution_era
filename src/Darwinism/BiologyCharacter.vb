@@ -27,6 +27,10 @@
         Me._Character = c
     End Sub
 
+    Public Overrides Function ToString() As String
+        Return $"{Character.Description} ~ {Level}"
+    End Function
+
 End Class
 
 Public Enum BiologyCharacters As Long
