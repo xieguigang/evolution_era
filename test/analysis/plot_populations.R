@@ -8,5 +8,5 @@ let size = result |> population_size();
 print(size);
 
 bitmap(file = `${@dir}/population_size.png`) {
-    plot(size, grid.fill = "white");
+    plot(size, grid.fill = "white", point.size = 2);
 }
