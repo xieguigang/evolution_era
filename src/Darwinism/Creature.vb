@@ -99,8 +99,26 @@ Public Class Creature
         End If
     End Function
 
-    Private Function Crossover(ByRef newOne As Creature, another As Creature) As Creature
+    Private Shared Function Crossover(ByRef newOne As Creature, another As Creature) As Creature
+        Dim inheritance = another.index.Values.ToArray.Random
 
+        If newOne.index.ContainsKey(inheritance.Character) Then
+            Dim character As BiologyCharacter = newOne.index(inheritance.Character)
+            Dim newLevel As Double = (character.Level + inheritance.Level) / 2
+
+            character.Level = newLevel
+        Else
+            ' add new one
+            For i As Integer = 0 To newOne.heredity.Length - 1
+                If newOne.heredity(i).Character = BiologyCharacters.None Then
+                    newOne.heredity(i).SetCharacter(inheritance.Character, inheritance.Level)
+                    newOne.index.Add(inheritance.Character, newOne.heredity(i))
+                    Exit For
+                End If
+            Next
+        End If
+
+        Return newOne
     End Function
 
     Public Function Mutation(mutation_rate As Double) As Creature
@@ -112,7 +130,16 @@ Public Class Creature
 
         If character.Character = BiologyCharacters.None Then
             ' obtain a new character
-            character.SetCharacter(BiologyCharacter.all_characters.Random, rand.NextDouble * mutation_rate)
+            Dim newCharacter = BiologyCharacter.all_characters.Random
+            Dim index = newOne.Where(Function(c) c.Character <> BiologyCharacters.None).ToDictionary(Function(c) c.Character)
+
+            If index.ContainsKey(newCharacter) Then
+                ' increase character level
+                index(newCharacter).Level += mutation_rate
+            Else
+                ' add a new character
+                character.SetCharacter(newCharacter, rand.NextDouble * mutation_rate)
+            End If
         Else
             ' adjust character levels
             Dim sign As Double = If(rand.NextDouble > 0.5, 1, -1)
