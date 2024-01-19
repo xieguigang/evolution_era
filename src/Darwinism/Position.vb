@@ -76,16 +76,18 @@ Public Class Position : Implements IPoint3D
                     ' do reproduce
                     Dim newOne As Creature = Creature.Reproduce(another.Creature, world.reproductive_isolation)
 
-                    ' check for empty slot
-                    For i As Integer = 0 To nearby.Length - 1
-                        If nearby(i) Is Me OrElse nearby(i) Is another Then
-                            Continue For
-                        End If
+                    If Not newOne Is Nothing Then
+                        ' check for empty slot
+                        For i As Integer = 0 To nearby.Length - 1
+                            If nearby(i) Is Me OrElse nearby(i) Is another Then
+                                Continue For
+                            End If
 
-                        If nearby(i).Creature Is Nothing AndAlso TestMove(nearby(i), creature:=newOne) Then
-                            nearby(i).Creature = newOne
-                        End If
-                    Next
+                            If nearby(i).Creature Is Nothing AndAlso TestMove(nearby(i), creature:=newOne) Then
+                                nearby(i).Creature = newOne
+                            End If
+                        Next
+                    End If
                 Else
                     If Creature.GetCharacter(BiologyCharacters.Cannibalism) > 0 Then
                         ' eat another
