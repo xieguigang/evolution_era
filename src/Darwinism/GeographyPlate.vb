@@ -6,13 +6,9 @@ Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
 Public Class GeographyPlate
 
     Dim spatial As Spatial3D(Of Position)
+    Dim world As WorldParameters
 
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    Dim reproductive_isolation As Double = 0.9
-
-    Sub New(size As Size, Optional height As Integer = 3)
+    Sub New(args As WorldParameters, size As Size, Optional height As Integer = 3)
         Dim points As New List(Of Position)
         Dim c As Position
 
@@ -33,6 +29,8 @@ Public Class GeographyPlate
                 Next
             Next
         Next
+
+        Me.world = args
     End Sub
 
     ''' <summary>
@@ -45,10 +43,10 @@ Public Class GeographyPlate
                     Continue For
                 End If
 
-                Dim nearby = spatial.Query(point.X, point.Y, point.Z).ToArray
+                Dim nearby As Position() = spatial.Query(point.X, point.Y, point.Z).ToArray
                 Dim tryOne As Position = nearby.Random
 
-                Call point.TryMoveTo(another:=tryOne)
+                Call point.TryMoveTo(another:=tryOne, nearby, world)
             Next
         Next
     End Sub
@@ -73,39 +71,89 @@ Public Class Position : Implements IPoint3D
         End If
     End Sub
 
-    Public Sub TryMoveTo(another As Position)
+    Public Sub TryMoveTo(another As Position, nearby As Position(), world As WorldParameters)
+        If TestMove(another, Creature) Then
+            Call DoMove(another, nearby, world)
+        End If
+    End Sub
+
+    Public Shared Function TestMove(another As Position, creature As Creature) As Boolean
         If another.Z > 0 OrElse another.Geography = GeographyType.Air Then
             ' needs wing
-            Dim wing As Double = Creature.GetCharacter(BiologyCharacters.Wing)
+            Dim wing As Double = creature.GetCharacter(BiologyCharacters.Wing)
 
             If wing > 0 Then
-                Call DoMove(another)
+                Return True
             End If
         ElseIf another.Geography = GeographyType.Water Then
-            Dim fin As Double = Creature.GetCharacter(BiologyCharacters.FishFin)
+            Dim fin As Double = creature.GetCharacter(BiologyCharacters.FishFin)
 
             If fin > 0 Then
-                Call DoMove(another)
+                Return True
             End If
         Else
             ' is land
-            Dim foot As Double = Creature.GetCharacter(BiologyCharacters.Foot)
+            Dim foot As Double = creature.GetCharacter(BiologyCharacters.Foot)
 
             If foot > 0 Then
-                Call DoMove(another)
+                Return True
+            End If
+        End If
+
+        Return False
+    End Function
+
+    Private Sub DoMove(another As Position, nearby As Position(), world As WorldParameters)
+        If another.Creature Is Nothing Then
+            If rand.NextDouble < world.reproduce_rate Then
+                ' try to reproduce new one
+                another.Creature = Creature.Reproduce(another:=Nothing, world.reproductive_isolation)
+            Else
+                ' move to another position
+                another.Creature = Creature
+                Creature = Nothing
+            End If
+        Else
+            ' another position already has a creature
+            ' needs test this creature can predation another creature
+            Dim same_species As Boolean = Creature.Similarity(another.Creature) > world.reproductive_isolation
+
+            If same_species Then
+                If rand.NextDouble < world.reproduce_rate Then
+                    ' do reproduce
+                    Dim newOne As Creature = Creature.Reproduce(another.Creature, world.reproductive_isolation)
+
+                    ' check for empty slot
+                    For i As Integer = 0 To nearby.Length - 1
+                        If nearby(i) Is Me OrElse nearby(i) Is another Then
+                            Continue For
+                        End If
+
+                        If nearby(i).Creature Is Nothing AndAlso TestMove(nearby(i), creature:=newOne) Then
+                            nearby(i).Creature = newOne
+                        End If
+                    Next
+                Else
+                    If Creature.GetCharacter(BiologyCharacters.Cannibalism) > 0 Then
+                        ' eat another
+                        another.Creature = Creature
+                        Creature = Nothing
+                    Else
+                        ' do nothing
+                    End If
+                End If
+            Else
+                If Predation(another.Creature) Then
+                    another.Creature = Creature
+                    Creature = Nothing
+                End If
             End If
         End If
     End Sub
 
-    Private Sub DoMove(another As Position)
-        If another.Creature Is Nothing Then
-            another.Creature = Creature
-            Creature = Nothing
-        Else
-            ' another position already has a creature
-            ' needs test this creature can predation another creature
-        End If
-    End Sub
+    Private Function Predation(another As Creature) As Boolean
+
+    End Function
 
 End Class
 
@@ -114,3 +162,8 @@ Public Enum GeographyType
     Land
     Air
 End Enum
+
+Public Structure WorldParameters
+    Dim reproductive_isolation As Double
+    Dim reproduce_rate As Double
+End Structure

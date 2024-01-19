@@ -82,7 +82,7 @@ Public Class Creature
             Return Mutation(0.1)
         Else
             ' test reproductive isolation
-            If another.GetCharacter(BiologyCharacters.SexualReproduction) <= 0 Then
+            If another Is Nothing OrElse another.GetCharacter(BiologyCharacters.SexualReproduction) <= 0 Then
                 ' can not combine and create new
                 Return Nothing
             End If
