@@ -5,4 +5,4 @@ let savefile = file(`${@dir}/demo.dat`);
 
 Era::evolve(worldModel, file = savefile);
 
-close(file);
+close(savefile);

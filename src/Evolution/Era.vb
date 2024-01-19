@@ -1,6 +1,7 @@
 Imports System.Drawing
 Imports System.IO
 Imports evolution_era
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.Rsharp.Runtime
@@ -70,7 +71,7 @@ Public Module Era
         Call world.Init()
         Call save.Record(0, reader.GetCreatures)
 
-        For i As Integer = 1 To time
+        For Each i As Integer In Tqdm.Wrap(Enumerable.Range(1, time + 1).ToArray, useColor:=True)
             Call world.TimeElapsed()
             Call save.Record(i, reader.GetCreatures)
         Next
