@@ -37,13 +37,12 @@ Public Module DataFile
     <ExportAPI("biology_abundance")>
     Public Function biologyCharacterAbundance(file As DataReader) As Object
         Dim df As New dataframe With {.columns = New Dictionary(Of String, Array)}
+        Dim levels = file.BiologyCharacterAbundance.ToArray
+        Dim i As Integer = 0
 
-        For Each type As BiologyCharacters In Enums(Of BiologyCharacters)()
-            If type = BiologyCharacters.None Then
-                Continue For
-            End If
-
-            Call df.add()
+        For Each type As BiologyCharacters In BiologyCharacter.all_characters
+            df.add(type.Description, levels.Select(Function(t) t(i)))
+            i += 1
         Next
 
         Return df
