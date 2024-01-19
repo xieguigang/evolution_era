@@ -15,6 +15,11 @@ Public Class Creature
     ''' </summary>
     Dim heredity As BiologyCharacter()
 
+    ''' <summary>
+    ''' the blood lineage
+    ''' </summary>
+    Dim parent As Integer()
+
     Sub New()
     End Sub
 
@@ -120,6 +125,10 @@ Public Class Creature
             Next
         End If
 
+        newOne.parent = newOne.parent _
+            .AppendAfter(another.GetHashCode) _
+            .ToArray
+
         Return newOne
     End Function
 
@@ -155,7 +164,7 @@ Public Class Creature
             End If
         End If
 
-        Return New Creature(newOne)
+        Return New Creature(newOne) With {.parent = {Me.GetHashCode}}
     End Function
 
 End Class

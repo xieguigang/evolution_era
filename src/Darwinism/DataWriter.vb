@@ -5,13 +5,18 @@ Public Class DataWriter : Implements IDisposable
 
     ReadOnly bin As StreamPack
 
-    Private disposedValue As Boolean
+    Dim populationSize As Integer
+    Dim disposedValue As Boolean
 
     Sub New(file As Stream)
         bin = New StreamPack(file, meta_size:=1024 * 1024 * 32)
     End Sub
 
     Public Sub Record(time As Integer, creatures As IEnumerable(Of Creature))
+        Dim all = creatures.ToArray
+        Dim dir As String = $"/data/{time}"
+
+        populationSize += all.Length
 
     End Sub
 
