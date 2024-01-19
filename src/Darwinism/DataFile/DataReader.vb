@@ -33,7 +33,7 @@ Public Class DataReader
     ''' <returns>a vector keeps the element order with <see cref="BiologyCharacter.all_characters"/></returns>
     Public Iterator Function BiologyCharacterAbundance() As IEnumerable(Of Double())
         For i As Integer = 0 To time - 1
-            Dim path As String = $"/data/{time}.dat"
+            Dim path As String = $"/data/{i}.dat"
             Dim s As Stream = bin.OpenFile(path, FileMode.Open, FileAccess.Read)
             Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
                 .ByteOrder = ByteOrder.BigEndian
