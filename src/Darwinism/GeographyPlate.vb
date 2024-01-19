@@ -1,5 +1,7 @@
+Imports System.Drawing
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Imaging
+Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
 
 Public Class GeographyPlate
 
@@ -10,8 +12,27 @@ Public Class GeographyPlate
     ''' </summary>
     Dim reproductive_isolation As Double = 0.9
 
-    Sub New()
+    Sub New(size As Size, Optional height As Integer = 3)
+        Dim points As New List(Of Position)
+        Dim c As Position
 
+        For x As Integer = 0 To size.Width
+            For y As Integer = 0 To size.Height
+                For z As Integer = 0 To height
+                    c = New Position(x, y, z)
+                    points.Add(c)
+
+                    If z = 0 Then
+                        ' is water or land
+                        If rand.NextDouble > 0.4 Then
+                            c.Geography = GeographyType.Water
+                        Else
+                            c.Geography = GeographyType.Land
+                        End If
+                    End If
+                Next
+            Next
+        Next
     End Sub
 
     ''' <summary>
@@ -41,6 +62,16 @@ Public Class Position : Implements IPoint3D
     Public Property X As Integer Implements RasterPixel.X
     Public Property Y As Integer Implements RasterPixel.Y
     Public Property Geography As GeographyType
+
+    Sub New(x As Integer, y As Integer, z As Integer)
+        Me.X = x
+        Me.Y = y
+        Me.Z = z
+
+        If z > 0 Then
+            Geography = GeographyType.Air
+        End If
+    End Sub
 
     Public Sub TryMoveTo(another As Position)
         If another.Z > 0 OrElse another.Geography = GeographyType.Air Then

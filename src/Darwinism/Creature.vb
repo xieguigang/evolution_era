@@ -57,7 +57,37 @@ Public Class Creature
             .ToArray
     End Function
 
-    Public Function Reproduce() As Creature
+    Public Function Reproduce(another As Creature, isolation As Double) As Creature
+        Dim sexualReproduction As Double = Me.GetCharacter(BiologyCharacters.SexualReproduction)
+
+        If sexualReproduction = 0.0 Then
+            ' asexual
+            ' only mutation happends
+            Return Mutation(0.1)
+        Else
+            ' test reproductive isolation
+            If another.GetCharacter(BiologyCharacters.SexualReproduction) <= 0 Then
+                ' can not combine and create new
+                Return Nothing
+            End If
+
+            Dim similarity As Double = Me.Similarity(another)
+
+            If similarity > isolation Then
+                ' could be combine and create new one: mutation and crossover
+                Return Crossover(newOne:=Mutation(sexualReproduction), another)
+            Else
+                ' reproductive isolation
+                Return Nothing
+            End If
+        End If
+    End Function
+
+    Private Function Crossover(ByRef newOne As Creature, another As Creature) As Creature
+
+    End Function
+
+    Public Function Mutation(mutation_rate As Double) As Creature
 
     End Function
 

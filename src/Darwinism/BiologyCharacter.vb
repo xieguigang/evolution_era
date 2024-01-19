@@ -9,6 +9,9 @@
 End Class
 
 Public Enum BiologyCharacters As Long
+    ''' <summary>
+    ''' this slot is empty
+    ''' </summary>
     None
     ''' <summary>
     ''' body size(weight)
@@ -24,5 +27,15 @@ Public Enum BiologyCharacters As Long
     ElectricalShock
     FishFin
     FishGill
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
     Cannibalism
+
+    ''' <summary>
+    ''' could be crossover and mutation, otherwise when SexualReproduction
+    ''' is zero, only mutation will happends when do reproduction
+    ''' </summary>
+    SexualReproduction
 End Enum
