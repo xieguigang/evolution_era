@@ -146,7 +146,7 @@ Public Class Creature
 
         If character.Character = BiologyCharacters.None Then
             ' obtain a new character
-            Dim newCharacter = BiologyCharacter.all_characters.Random
+            Dim newCharacter = DirectCast(BiologyCharacter.all_characters, BiologyCharacters()).Random
             Dim index = newOne.Where(Function(c) c.Character <> BiologyCharacters.None).ToDictionary(Function(c) c.Character)
 
             If index.ContainsKey(newCharacter) Then
