@@ -1,6 +1,4 @@
-﻿Imports System.Drawing
-Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
-Imports Microsoft.VisualBasic.Imaging
+﻿Imports Microsoft.VisualBasic.Imaging
 Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
 Imports std = System.Math
 Public Class Position : Implements IPoint3D

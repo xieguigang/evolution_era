@@ -70,6 +70,14 @@ Public Class GeographyPlate
         Next
     End Sub
 
+    Public Iterator Function GetPositions() As IEnumerable(Of Position)
+        For Each layer As Grid(Of Position) In spatial.ZLayers
+            For Each point As Position In layer.EnumerateData
+                Yield point
+            Next
+        Next
+    End Function
+
 End Class
 
 Public Enum GeographyType
