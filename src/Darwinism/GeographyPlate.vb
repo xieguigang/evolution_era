@@ -2,11 +2,14 @@ Imports System.Drawing
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Imaging
 Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
+Imports std = System.Math
 
 Public Class GeographyPlate
 
     Dim spatial As Spatial3D(Of Position)
     Dim world As WorldParameters
+    Dim size As Size
+    Dim height As Integer
 
     Sub New(args As WorldParameters, size As Size, Optional height As Integer = 3)
         Dim points As New List(Of Position)
@@ -30,7 +33,25 @@ Public Class GeographyPlate
             Next
         Next
 
+        Me.size = size
+        Me.height = height
         Me.world = args
+        Me.spatial = Spatial3D(Of Position).CreateSpatial3D(Of Position)(points)
+    End Sub
+
+    Public Sub Init(capacity As Integer)
+        Dim x As Integer = rand.NextInteger(size.Width)
+        Dim y As Integer = rand.NextInteger(size.Height)
+        Dim position As Position = spatial.GetData(x, y, z:=0)
+        Dim characters = Creature.Empty(capacity).ToArray
+
+        If position.Geography = GeographyType.Land Then
+            characters(0).SetCharacter(BiologyCharacters.Foot, 1)
+        Else
+            characters(0).SetCharacter(BiologyCharacters.FishFin, 1)
+        End If
+
+        position.Creature = New Creature(characters)
     End Sub
 
     ''' <summary>
@@ -151,8 +172,30 @@ Public Class Position : Implements IPoint3D
         End If
     End Sub
 
-    Private Function Predation(another As Creature) As Boolean
+    Private Shared Function BodySizeDifference(a As Creature, b As Creature) As Double
+        Return std.Abs(a.GetCharacter(BiologyCharacters.BodySize) - b.GetCharacter(BiologyCharacters.BodySize))
+    End Function
 
+    Private Function Predation(another As Creature) As Boolean
+        Dim electricalShock = Creature.GetCharacter(BiologyCharacters.ElectricalShock)
+
+        If electricalShock > another.GetCharacter(BiologyCharacters.AntiElectricalShock) Then
+            Return BodySizeDifference(Creature, another) < 1
+        End If
+
+        Dim toxin = Creature.GetCharacter(BiologyCharacters.Toxin)
+
+        If toxin > another.GetCharacter(BiologyCharacters.Antitoxin) Then
+            Return BodySizeDifference(Creature, another) < 1
+        End If
+
+        Dim tooth = Creature.GetCharacter(BiologyCharacters.Tooth)
+
+        If tooth > another.GetCharacter(BiologyCharacters.OuterShell) Then
+            Return BodySizeDifference(Creature, another) < 1
+        End If
+
+        Return Creature.GetCharacter(BiologyCharacters.BodySize) > another.GetCharacter(BiologyCharacters.BodySize)
     End Function
 
 End Class

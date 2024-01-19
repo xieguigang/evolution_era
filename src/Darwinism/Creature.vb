@@ -26,12 +26,14 @@ Public Class Creature
     End Sub
 
     Sub New(capacity As Integer)
-        heredity = New BiologyCharacter(capacity - 1) {}
-
-        For i As Integer = 0 To capacity - 1
-            heredity(i) = New BiologyCharacter()
-        Next
+        heredity = Empty(capacity).ToArray
     End Sub
+
+    Public Shared Iterator Function Empty(capacity As Integer) As IEnumerable(Of BiologyCharacter)
+        For i As Integer = 0 To capacity - 1
+            Yield New BiologyCharacter()
+        Next
+    End Function
 
     ''' <summary>
     ''' evaluate the similarity for calculate the reproductive isolation, the less 

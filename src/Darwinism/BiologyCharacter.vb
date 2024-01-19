@@ -39,15 +39,14 @@ Public Enum BiologyCharacters As Long
     ''' </summary>
     BodySize
     Wing
-    Claw
     Foot
     Tooth
     OuterShell
     Toxin
     Antitoxin
     ElectricalShock
+    AntiElectricalShock
     FishFin
-    FishGill
 
     ''' <summary>
     ''' 
