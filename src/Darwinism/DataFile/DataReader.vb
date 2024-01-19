@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
@@ -32,7 +33,7 @@ Public Class DataReader
     ''' </summary>
     ''' <returns>a vector keeps the element order with <see cref="BiologyCharacter.all_characters"/></returns>
     Public Iterator Function BiologyCharacterAbundance() As IEnumerable(Of Double())
-        For i As Integer = 0 To time - 1
+        For Each i As Integer In Tqdm.Wrap(Enumerable.Range(0, time).ToArray)
             Dim path As String = $"/data/{i}.dat"
             Dim s As Stream = bin.OpenFile(path, FileMode.Open, FileAccess.Read)
             Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
@@ -45,6 +46,8 @@ Public Class DataReader
             For Each type As BiologyCharacters In BiologyCharacter.all_characters
                 Call counts.Add(type, New Counter)
             Next
+
+            Dim pop_size As Integer = rd.ReadInt32
 
             Do While Not rd.EndOfStream
                 rd.ReadInt32() ' guid
@@ -78,6 +81,10 @@ Public Class DataReader
                 End If
             End Get
         End Property
+
+        Public Overrides Function ToString() As String
+            Return $"{total}/{n} = {average}"
+        End Function
 
     End Class
 
