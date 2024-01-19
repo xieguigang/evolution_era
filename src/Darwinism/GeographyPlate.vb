@@ -68,7 +68,10 @@ Public Class GeographyPlate
                     Continue For
                 End If
 
-                Dim nearby As Position() = spatial.Query(point.X, point.Y, point.Z).ToArray
+                Dim nearby As Position() = spatial _
+                    .Query(point.X, point.Y, point.Z) _
+                    .Where(Function(a) a IsNot point) _
+                    .ToArray
                 Dim tryOne As Position = nearby.Random
 
                 Call point.TryMoveTo(another:=tryOne, nearby, world)
