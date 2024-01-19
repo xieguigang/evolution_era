@@ -9,6 +9,9 @@
 */
 declare namespace Analysis {
    /**
+   */
+   function biology_abundance(file: object): any;
+   /**
     * open the simulation result file
     * 
     * 
