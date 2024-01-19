@@ -42,6 +42,9 @@ Public Class DataWriter : Implements IDisposable
                 Call wd.Write(character.Level)
             Next
         Next
+
+        Call wd.Flush()
+        Call wd.Dispose()
     End Sub
 
     Private Sub SaveMetaData()
