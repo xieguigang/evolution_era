@@ -37,11 +37,11 @@ Public Class GeographyPlate
         Me.spatial = Spatial3D(Of Position).CreateSpatial3D(Of Position)(points)
     End Sub
 
-    Public Sub Init(capacity As Integer)
+    Public Sub Init()
         Dim x As Integer = rand.NextInteger(size.Width)
         Dim y As Integer = rand.NextInteger(size.Height)
         Dim position As Position = spatial.GetData(x, y, z:=0)
-        Dim characters = Creature.Empty(capacity).ToArray
+        Dim characters = Creature.Empty(capacity:=world.dna_capacity).ToArray
 
         If position.Geography = GeographyType.Land Then
             characters(0).SetCharacter(BiologyCharacters.Foot, 1)
@@ -89,4 +89,5 @@ End Enum
 Public Structure WorldParameters
     Dim reproductive_isolation As Double
     Dim reproduce_rate As Double
+    Dim dna_capacity As Integer
 End Structure
