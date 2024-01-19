@@ -64,7 +64,7 @@ Public Module Era
             Return buf.TryCast(Of Message)
         End If
 
-        Dim save As New DataWriter(buf.TryCast(Of Stream))
+        Dim save As New DataWriter(buf.TryCast(Of Stream), world.Arguments)
         Dim reader As New DataAdapter(world)
 
         Call world.Init()

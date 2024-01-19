@@ -9,6 +9,12 @@ Public Class GeographyPlate
     Dim size As Size
     Dim height As Integer
 
+    Public ReadOnly Property Arguments As WorldParameters
+        Get
+            Return world
+        End Get
+    End Property
+
     Sub New(args As WorldParameters, size As Size, Optional height As Integer = 3)
         Dim points As New List(Of Position)
         Dim c As Position
