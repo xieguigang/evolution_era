@@ -1,4 +1,5 @@
 ﻿Imports System.Runtime.CompilerServices
+Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
 
 Public Class Creature
 
@@ -15,6 +16,21 @@ Public Class Creature
     Dim heredity As BiologyCharacter()
 
     Sub New()
+    End Sub
+
+    Sub New(characters As BiologyCharacter())
+        heredity = characters
+        index = characters _
+            .Where(Function(c) c.Character <> BiologyCharacters.None) _
+            .ToDictionary(Function(c) c.Character)
+    End Sub
+
+    Sub New(capacity As Integer)
+        heredity = New BiologyCharacter(capacity - 1) {}
+
+        For i As Integer = 0 To capacity - 1
+            heredity(i) = New BiologyCharacter()
+        Next
     End Sub
 
     ''' <summary>
@@ -88,7 +104,29 @@ Public Class Creature
     End Function
 
     Public Function Mutation(mutation_rate As Double) As Creature
+        Dim newOne As BiologyCharacter() = Me.heredity _
+            .Select(Function(c) New BiologyCharacter(c)) _
+            .ToArray
+        Dim pick As Integer = rand.NextInteger(newOne.Length)
+        Dim character As BiologyCharacter = newOne(pick)
 
+        If character.Character = BiologyCharacters.None Then
+            ' obtain a new character
+            character.SetCharacter(BiologyCharacter.all_characters.Random, rand.NextDouble * mutation_rate)
+        Else
+            ' adjust character levels
+            Dim sign As Double = If(rand.NextDouble > 0.5, 1, -1)
+            Dim d As Double = rand.NextDouble * mutation_rate
+
+            character.Level += (sign * d)
+
+            If character.Level < 0 Then
+                ' loss a character
+                character.SetCharacter(BiologyCharacters.None, 0)
+            End If
+        End If
+
+        Return New Creature(newOne)
     End Function
 
 End Class
