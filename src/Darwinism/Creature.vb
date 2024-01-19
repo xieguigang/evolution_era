@@ -10,15 +10,16 @@ Public Class Creature
     End Property
 
     Dim index As Dictionary(Of BiologyCharacters, BiologyCharacter)
+
     ''' <summary>
     ''' fixed size
     ''' </summary>
-    Dim heredity As BiologyCharacter()
-
+    Friend heredity As BiologyCharacter()
     ''' <summary>
     ''' the blood lineage
     ''' </summary>
-    Dim parent As Integer()
+    Friend parent As Integer()
+    Friend ReadOnly guid As Integer = Me.GetHashCode
 
     Sub New()
     End Sub

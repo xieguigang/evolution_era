@@ -87,7 +87,17 @@ Public Enum GeographyType
 End Enum
 
 Public Structure WorldParameters
+
     Dim reproductive_isolation As Double
     Dim reproduce_rate As Double
     Dim dna_capacity As Integer
+
+    Public Function GetObject() As Dictionary(Of String, String)
+        Return New Dictionary(Of String, String) From {
+            {"reproductive_isolation", reproductive_isolation},
+            {"reproduce_rate", reproduce_rate},
+            {"dna_capacity", dna_capacity}
+        }
+    End Function
+
 End Structure
