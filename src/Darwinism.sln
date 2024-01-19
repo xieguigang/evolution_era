@@ -141,8 +141,8 @@ Global
 		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Release|x86.Build.0 = Release|Any CPU
 		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
 		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
-		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|x64.ActiveCfg = Release|Any CPU
-		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|x64.Build.0 = Release|Any CPU
+		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
+		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
 		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|x86.ActiveCfg = Release|Any CPU
 		{F10C617D-4CC9-43A9-9DAC-B510AFC5680D}.Rsharp_app_release|x86.Build.0 = Release|Any CPU
 		{3921CDF2-2547-4C04-81B7-A781A26BBBC0}.CFD_win32|Any CPU.ActiveCfg = CFD_win32|Any CPU
@@ -861,8 +861,8 @@ Global
 		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Release|x86.Build.0 = Release|Any CPU
 		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|Any CPU.Build.0 = Release|Any CPU
-		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|x64.ActiveCfg = Release|Any CPU
-		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|x64.Build.0 = Release|Any CPU
+		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|x64.ActiveCfg = Rsharp_app_release|x64
+		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|x64.Build.0 = Rsharp_app_release|x64
 		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|x86.ActiveCfg = Release|Any CPU
 		{F6E0892B-478E-44EF-94ED-35F5312FB848}.Rsharp_app_release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
