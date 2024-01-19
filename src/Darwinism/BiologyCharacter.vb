@@ -8,7 +8,7 @@
 
 End Class
 
-Public Enum BiologyCharacters
+Public Enum BiologyCharacters As Long
     None
     ''' <summary>
     ''' body size(weight)
@@ -16,6 +16,7 @@ Public Enum BiologyCharacters
     BodySize
     Wing
     Claw
+    Foot
     Tooth
     OuterShell
     Toxin
@@ -23,4 +24,5 @@ Public Enum BiologyCharacters
     ElectricalShock
     FishFin
     FishGill
+    Cannibalism
 End Enum
