@@ -41,7 +41,7 @@ Public Module Era
             dims = {dims(0), dims(0), dims(0)}
         End If
 
-        Return New GeographyPlate(args, New Size(dims(0), dims(1)), height:=dims(3))
+        Return New GeographyPlate(args, New Size(dims(0), dims(1)), height:=dims(2))
     End Function
 
     ''' <summary>
