@@ -55,7 +55,7 @@ Public Class DataReader
             Next
 
             Yield BiologyCharacter.all_characters _
-                .Select(Function(a) counts(a).total) _
+                .Select(Function(a) counts(a).average) _
                 .ToArray
         Next
     End Function
