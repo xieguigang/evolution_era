@@ -210,7 +210,7 @@ Public Class Creature
                 ' add a new character
                 character.SetCharacter(newCharacter, rand.NextDouble * mutation_rate)
             End If
-        Else
+        ElseIf rand.NextDouble > 0.5 Then
             ' adjust character levels
             Dim sign As Double = If(rand.NextDouble > 0.5, 1, -1)
             Dim d As Double = rand.NextDouble * mutation_rate
@@ -221,6 +221,14 @@ Public Class Creature
                 ' loss a character
                 character.SetCharacter(BiologyCharacters.None, 0)
             End If
+        Else
+            ' change biological character
+            Dim newCharacter = DirectCast(BiologyCharacter.all_characters, BiologyCharacters()) _
+                .Where(Function(c) Not index.ContainsKey(c)) _
+                .ToArray _
+                .Random
+
+            newOne(pick) = New BiologyCharacter(newCharacter, 1)
         End If
 
         Me.energy /= 2
