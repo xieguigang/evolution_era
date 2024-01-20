@@ -47,46 +47,46 @@ Public Class DataReader
                 Call counts.Add(type, New Counter)
             Next
 
-            For Each c In GetCreatures(rd)
-                For Each chr As BiologyCharacter In c.heredity
+            For Each c As CreatureData In GetCreatures(rd)
+                For Each chr As BiologyCharacter In c.Heredity
                     counts(chr.Character).total += chr.Level
                     counts(chr.Character).n += 1
                 Next
             Next
 
             Yield BiologyCharacter.all_characters _
-                .Select(Function(a) counts(a).average) _
+                .Select(Function(a) counts(a).total) _
                 .ToArray
         Next
     End Function
 
-    Private Iterator Function GetCreatures(rd As BinaryDataReader) As IEnumerable(Of (
-        guid As Integer, xyz As Integer(), parent As Integer(),
-        era As Integer, age As Integer, lifespan As Integer, energy As Double,
-        heredity As BiologyCharacter()
-    ))
+    Private Iterator Function GetCreatures(rd As BinaryDataReader) As IEnumerable(Of CreatureData)
         Dim pop_size As Integer = rd.ReadInt32
-        Dim biology As BiologyCharacters
-        Dim level As Double
 
         For i As Integer = 0 To pop_size - 1
-            Dim guid = rd.ReadInt32() ' guid
-            Dim xyz As Integer() = rd.ReadInt32s(3) ' position
-            Dim parent = rd.ReadInt32s(rd.ReadInt32) ' parent lineage
-            Dim era = rd.ReadInt32() ' era
-            Dim age = rd.ReadInt32() ' age
-            Dim lifespan = rd.ReadInt32() ' lifespan
-            Dim energy As Double = rd.ReadDouble  ' energy
-            Dim heredity As BiologyCharacter() = New BiologyCharacter(dna_size - 1) {}
-
-            For j As Integer = 0 To dna_size - 1
-                biology = rd.ReadInt64
-                level = rd.ReadDouble
-                heredity(j) = New BiologyCharacter(biology, level)
-            Next
-
-            Yield (guid, xyz, parent, era, age, lifespan, energy, heredity)
+            Yield ParseOne(rd)
         Next
+    End Function
+
+    Private Function ParseOne(rd As BinaryDataReader) As CreatureData
+        Dim biology As BiologyCharacters
+        Dim level As Double
+        Dim guid = rd.ReadInt32() ' guid
+        Dim xyz As Integer() = rd.ReadInt32s(3) ' position
+        Dim parent = rd.ReadInt32s(rd.ReadInt32) ' parent lineage
+        Dim era = rd.ReadInt32() ' era
+        Dim age = rd.ReadInt32() ' age
+        Dim lifespan = rd.ReadInt32() ' lifespan
+        Dim energy As Double = rd.ReadDouble  ' energy
+        Dim heredity As BiologyCharacter() = New BiologyCharacter(dna_size - 1) {}
+
+        For j As Integer = 0 To dna_size - 1
+            biology = rd.ReadInt64
+            level = rd.ReadDouble
+            heredity(j) = New BiologyCharacter(biology, level)
+        Next
+
+        Return (guid, xyz, parent, era, age, lifespan, energy, heredity)
     End Function
 
     Public Function CreatureMatrix() As DataFrame
@@ -106,8 +106,8 @@ Public Class DataReader
                 .ByteOrder = ByteOrder.BigEndian
             }
 
-            For Each c In GetCreatures(rd)
-                Dim obj_id As String = $"{c.era} - {c.guid}"
+            For Each c As CreatureData In GetCreatures(rd)
+                Dim obj_id As String = $"{c.Era} - {c.Guid}"
 
                 ' has already been added
                 If obj_id Like obj_index Then
@@ -116,10 +116,10 @@ Public Class DataReader
                     obj_index.Add(obj_id)
                 End If
 
-                era.Add(c.era)
-                creature_id.Add(c.guid)
+                era.Add(c.Era)
+                creature_id.Add(c.Guid)
 
-                Dim character_groups = c.heredity _
+                Dim character_groups = c.Heredity _
                     .GroupBy(Function(ci) ci.Character) _
                     .ToDictionary(Function(ci) ci.Key,
                                   Function(ci)
