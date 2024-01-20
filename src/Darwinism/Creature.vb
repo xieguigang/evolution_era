@@ -26,8 +26,8 @@ Public Class Creature
     ''' </summary>
     Friend era As Integer
 
-    Dim age As Integer
-    Dim lifespan As Integer
+    Friend age As Integer
+    Friend lifespan As Integer
 
     Sub New()
     End Sub

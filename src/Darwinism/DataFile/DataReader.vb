@@ -52,6 +52,9 @@ Public Class DataReader
             Do While Not rd.EndOfStream
                 rd.ReadInt32() ' guid
                 rd.ReadInt32s(rd.ReadInt32) ' parent lineage
+                rd.ReadInt32() ' era
+                rd.ReadInt32() ' age
+                rd.ReadInt32() ' lifespan
 
                 For j As Integer = 1 To dna_size
                     biology = rd.ReadInt64

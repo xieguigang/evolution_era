@@ -20,10 +20,10 @@ Public Class DataWriter : Implements IDisposable
     End Sub
 
     Public Sub Record(time As Integer, creatures As IEnumerable(Of Creature))
-        Dim all = creatures.ToArray
+        Dim all As Creature() = creatures.ToArray
         Dim path As String = $"/data/{time}.dat"
 
-        populationSize.Add(all.Length)
+        Call populationSize.Add(all.Length)
 
         Dim s As Stream = bin.OpenFile(path, FileMode.Create, FileAccess.Write)
         Dim wd As New BinaryDataWriter(s, Encodings.ASCII) With {
@@ -36,6 +36,9 @@ Public Class DataWriter : Implements IDisposable
             Call wd.Write(creature.guid)
             Call wd.Write(creature.parent.TryCount)
             Call wd.Write(creature.parent.SafeQuery.ToArray)
+            Call wd.Write(creature.era)
+            Call wd.Write(creature.age)
+            Call wd.Write(creature.lifespan)
 
             For Each character As BiologyCharacter In creature.heredity
                 Call wd.Write(character.Character)
