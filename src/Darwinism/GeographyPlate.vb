@@ -98,26 +98,3 @@ Public Class GeographyPlate
 
 End Class
 
-Public Enum GeographyType
-    Water
-    Land
-    Air
-End Enum
-
-Public Structure WorldParameters
-
-    Dim reproductive_isolation As Double
-    Dim reproduce_rate As Double
-    Dim dna_capacity As Integer
-    Dim natural_death As Integer
-
-    Public Function GetObject() As Dictionary(Of String, String)
-        Return New Dictionary(Of String, String) From {
-            {"reproductive_isolation", reproductive_isolation},
-            {"reproduce_rate", reproduce_rate},
-            {"dna_capacity", dna_capacity},
-            {"natural death", natural_death}
-        }
-    End Function
-
-End Structure

@@ -1,6 +1,7 @@
 ﻿Imports Microsoft.VisualBasic.Imaging
 Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
 Imports std = System.Math
+
 Public Class Position : Implements IPoint3D
 
     Public Property Creature As Creature
