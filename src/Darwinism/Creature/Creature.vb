@@ -1,5 +1,6 @@
 ﻿Imports System.Runtime.CompilerServices
 Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
+Imports std = System.Math
 
 Public Class Creature
 
@@ -28,7 +29,7 @@ Public Class Creature
 
     Friend age As Integer
     Friend lifespan As Integer
-    Friend hunger As Integer
+    Friend hunger As Integer = 50
 
     Sub New()
     End Sub
@@ -45,7 +46,7 @@ Public Class Creature
     End Sub
 
     Friend Sub Eat(ByRef another As Creature)
-        Dim energy As Double = another.GetCharacter(BiologyCharacters.BodySize)
+        Dim energy As Double = std.exp(another.GetCharacter(BiologyCharacters.BodySize) + 1)
 
         hunger += energy
         another = Nothing
