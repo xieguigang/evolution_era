@@ -60,7 +60,7 @@ Public Class Position : Implements IPoint3D
         If another.Creature Is Nothing Then
             If rand.NextDouble < world.reproduce_rate Then
                 ' try to reproduce new one
-                another.Creature = Creature.Reproduce(another:=Nothing, world.reproductive_isolation)
+                another.Creature = Creature.Reproduce(another:=Nothing, world)
             Else
                 ' move to another position
                 another.Creature = Creature
@@ -74,7 +74,7 @@ Public Class Position : Implements IPoint3D
             If same_species Then
                 If rand.NextDouble < world.reproduce_rate Then
                     ' do reproduce
-                    Dim newOne As Creature = Creature.Reproduce(another.Creature, world.reproductive_isolation)
+                    Dim newOne As Creature = Creature.Reproduce(another.Creature, world)
 
                     If Not newOne Is Nothing Then
                         ' check for empty slot
