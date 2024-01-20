@@ -34,7 +34,7 @@ Public Class DataReader
     ''' </summary>
     ''' <returns>a vector keeps the element order with <see cref="BiologyCharacter.all_characters"/></returns>
     Public Iterator Function BiologyCharacterAbundance() As IEnumerable(Of Double())
-        For Each i As Integer In Tqdm.Wrap(Enumerable.Range(0, time).ToArray)
+        For Each i As Integer In Tqdm.Wrap(Enumerable.Range(0, time).ToArray, useColor:=True)
             Dim path As String = $"/data/{i}.dat"
             Dim s As Stream = bin.OpenFile(path, FileMode.Open, FileAccess.Read)
             Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
