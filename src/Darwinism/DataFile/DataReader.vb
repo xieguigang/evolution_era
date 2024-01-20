@@ -4,6 +4,7 @@ Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
 Imports Microsoft.VisualBasic.Linq
+Imports Microsoft.VisualBasic.Math.DataFrame
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports Microsoft.VisualBasic.Text
 
@@ -68,6 +69,10 @@ Public Class DataReader
                 .Select(Function(a) counts(a).average) _
                 .ToArray
         Next
+    End Function
+
+    Public Function CreatureMatrix() As DataFrame
+
     End Function
 
     Private Class Counter
