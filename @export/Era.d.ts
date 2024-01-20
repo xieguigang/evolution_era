@@ -34,9 +34,11 @@ declare namespace Era {
      * + default value Is ``0.5``.
      * @param dna_size 
      * + default value Is ``5``.
+     * @param natural_death 
+     * + default value Is ``100``.
      * @param env -
      * 
      * + default value Is ``null``.
    */
-   function world(size?: any, reproductive_isolation?: number, reproduce_rate?: number, dna_size?: object, env?: object): object;
+   function world(size?: any, reproductive_isolation?: number, reproduce_rate?: number, dna_size?: object, natural_death?: object, env?: object): object;
 }
