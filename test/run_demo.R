@@ -6,7 +6,7 @@ let worldModel = Era::world(defaultWorldMap(),
                           reproduce.rate = 0.45,
                           dna.size = 6,
                           natural.death = 30);
-let savefile = file(`${@dir}/demo.dat`);
+let savefile = file(`${@dir}/demo.dat`, truncate = TRUE);
 
 Era::evolve(worldModel, file = savefile, time = 1000);
 
