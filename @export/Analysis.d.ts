@@ -12,6 +12,13 @@ declare namespace Analysis {
    */
    function biology_abundance(file: object): any;
    /**
+    * get all creatures from the simulation result
+    * 
+    * 
+     * @param file -
+   */
+   function creatures(file: object): any;
+   /**
     * open the simulation result file
     * 
     * 
