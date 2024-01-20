@@ -61,8 +61,8 @@ Public Class DataReader
     End Function
 
     Private Iterator Function GetCreatures(rd As BinaryDataReader) As IEnumerable(Of (
-        guid As Integer, parent As Integer(),
-        era As Integer, age As Integer, lifespan As Integer,
+        guid As Integer, xyz As Integer(), parent As Integer(),
+        era As Integer, age As Integer, lifespan As Integer, energy As Double,
         heredity As BiologyCharacter()
     ))
         Dim pop_size As Integer = rd.ReadInt32
@@ -71,10 +71,12 @@ Public Class DataReader
 
         For i As Integer = 0 To pop_size - 1
             Dim guid = rd.ReadInt32() ' guid
+            Dim xyz As Integer() = rd.ReadInt32s(3) ' position
             Dim parent = rd.ReadInt32s(rd.ReadInt32) ' parent lineage
             Dim era = rd.ReadInt32() ' era
             Dim age = rd.ReadInt32() ' age
             Dim lifespan = rd.ReadInt32() ' lifespan
+            Dim energy As Double = rd.ReadDouble  ' energy
             Dim heredity As BiologyCharacter() = New BiologyCharacter(dna_size - 1) {}
 
             For j As Integer = 0 To dna_size - 1
@@ -83,7 +85,7 @@ Public Class DataReader
                 heredity(j) = New BiologyCharacter(biology, level)
             Next
 
-            Yield (guid, parent, era, age, lifespan, heredity)
+            Yield (guid, xyz, parent, era, age, lifespan, energy, heredity)
         Next
     End Function
 

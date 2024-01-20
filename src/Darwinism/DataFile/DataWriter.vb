@@ -1,7 +1,10 @@
-﻿Imports System.IO
+﻿Imports System.Drawing
+Imports System.Drawing.Imaging
+Imports System.IO
 Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
+Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Linq
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports Microsoft.VisualBasic.Text
@@ -19,8 +22,17 @@ Public Class DataWriter : Implements IDisposable
         Me.args = args
     End Sub
 
-    Public Function Record(time As Integer, creatures As IEnumerable(Of Creature), ByRef Optional getSize As Integer = -1) As Integer
-        Dim all As Creature() = creatures.ToArray
+    Public Sub WriteWorldMap(map As Image)
+        Dim path As String = "/metadata/worldMap.png"
+        Dim s As Stream = bin.OpenFile(path, FileMode.OpenOrCreate, FileAccess.Write)
+
+        Call map.Save(s, ImageFormat.Png)
+        Call s.Flush()
+        Call s.Dispose()
+    End Sub
+
+    Public Function Record(time As Integer, creatures As IEnumerable(Of Position), ByRef Optional getSize As Integer = -1) As Integer
+        Dim all As Position() = creatures.ToArray
         Dim path As String = $"/data/{time}.dat"
 
         getSize = all.Length
@@ -33,13 +45,19 @@ Public Class DataWriter : Implements IDisposable
 
         Call wd.Write(all.Length)
 
-        For Each creature As Creature In all
+        For Each loci As Position In all
+            Dim creature As Creature = loci.Creature
+
             Call wd.Write(creature.guid)
+            Call wd.Write(loci.X)
+            Call wd.Write(loci.Y)
+            Call wd.Write(loci.Z)
             Call wd.Write(creature.parent.TryCount)
             Call wd.Write(creature.parent.SafeQuery.ToArray)
             Call wd.Write(creature.era)
             Call wd.Write(creature.age)
             Call wd.Write(creature.lifespan)
+            Call wd.Write(creature.energy)
 
             For Each character As BiologyCharacter In creature.heredity
                 Call wd.Write(character.Character)

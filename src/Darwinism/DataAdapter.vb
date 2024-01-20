@@ -6,10 +6,14 @@
         Me.world = world
     End Sub
 
-    Public Iterator Function GetCreatures() As IEnumerable(Of Creature)
+    ''' <summary>
+    ''' get a collection of the position which has a creature on it
+    ''' </summary>
+    ''' <returns></returns>
+    Public Iterator Function GetCreatures() As IEnumerable(Of Position)
         For Each position As Position In world.GetPositions
             If Not position.Creature Is Nothing Then
-                Yield position.Creature
+                Yield position
             End If
         Next
     End Function

@@ -17,6 +17,8 @@ Public Class GeographyPlate
         End Get
     End Property
 
+    Public ReadOnly Property worldMap As Image
+
     Sub New(args As WorldParameters, map As Image, Optional height As Integer = 3, Optional water As String = "#0026ff")
         Dim points As New List(Of Position)
         Dim c As Position
@@ -44,6 +46,7 @@ Public Class GeographyPlate
             Next
         Next
 
+        Me.worldMap = map
         Me.size = size
         Me.height = height
         Me.world = args
