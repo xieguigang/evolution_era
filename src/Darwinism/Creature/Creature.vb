@@ -36,7 +36,7 @@ Public Class Creature
     ''' 1. keeps alive
     ''' 2. reproduce
     ''' </summary>
-    Friend energy As Double = 100
+    Friend energy As Double = 50
 
     Sub New()
     End Sub
@@ -241,8 +241,7 @@ Public Class Creature
         Me.energy *= (3 / 4)
 
         Return New Creature(newOne) With {
-            .parent = {Me.GetHashCode},
-            .energy = energy
+            .parent = {Me.GetHashCode}
         }
     End Function
 
