@@ -1,5 +1,7 @@
 Imports System.Drawing
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
+Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.BitmapImage
 Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
 
 Public Class GeographyPlate
@@ -15,9 +17,11 @@ Public Class GeographyPlate
         End Get
     End Property
 
-    Sub New(args As WorldParameters, size As Size, Optional height As Integer = 3)
+    Sub New(args As WorldParameters, map As Image, Optional height As Integer = 3, Optional water As String = "#0026ff")
         Dim points As New List(Of Position)
         Dim c As Position
+        Dim terrain As BitmapBuffer = BitmapBuffer.FromImage(map)
+        Dim water_color As Color = water.TranslateColor
 
         For x As Integer = 0 To size.Width
             For y As Integer = 0 To size.Height
@@ -27,7 +31,7 @@ Public Class GeographyPlate
 
                     If z = 0 Then
                         ' is water or land
-                        If rand.NextDouble > 0.4 Then
+                        If terrain.GetPixel(x, y).Equals(water_color, tolerance:=15) Then
                             c.Geography = GeographyType.Water
                         Else
                             c.Geography = GeographyType.Land

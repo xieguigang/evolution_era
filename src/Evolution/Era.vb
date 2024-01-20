@@ -7,7 +7,6 @@ Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Components
 Imports SMRUCC.Rsharp.Runtime.Interop
-Imports SMRUCC.Rsharp.Runtime.Vectorization
 
 <Package("Era")>
 Public Module Era
@@ -15,17 +14,17 @@ Public Module Era
     ''' <summary>
     ''' create a new world
     ''' </summary>
-    ''' <param name="size"></param>
     ''' <param name="env"></param>
     ''' <returns></returns>
     <ExportAPI("world")>
     <RApiReturn(GetType(GeographyPlate))>
-    Public Function world(<RRawVectorArgument(TypeCodes.integer)>
-                          Optional size As Object = "10,10,3",
+    Public Function world(map As Image,
+                          Optional height As Integer = 3,
                           Optional reproductive_isolation As Double = 0.9,
                           Optional reproduce_rate As Double = 0.5,
                           Optional dna_size As Integer = 5,
                           Optional natural_death As Integer = 100,
+                          Optional water_color As String = "#0026ff",
                           Optional env As Environment = Nothing) As Object
 
         Dim args As New WorldParameters With {
@@ -34,17 +33,8 @@ Public Module Era
             .dna_capacity = dna_size,
             .natural_death = natural_death
         }
-        Dim dims As Integer() = CLRVector.asInteger(size)
 
-        If dims.IsNullOrEmpty Then
-            Return Internal.debug.stop("the dimension size of the new world could not be nothing!", env)
-        ElseIf dims.Length = 2 Then
-            dims = {dims(0), dims(1), 3}
-        ElseIf dims.Length = 1 Then
-            dims = {dims(0), dims(0), dims(0)}
-        End If
-
-        Return New GeographyPlate(args, New Size(dims(0), dims(1)), height:=dims(2))
+        Return New GeographyPlate(args, map, height:=height, water:=water_color)
     End Function
 
     ''' <summary>
