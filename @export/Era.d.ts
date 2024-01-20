@@ -32,14 +32,16 @@ declare namespace Era {
      * @param reproduce_rate 
      * + default value Is ``0.5``.
      * @param dna_size 
-     * + default value Is ``5``.
+     * + default value Is ``6``.
      * @param natural_death 
-     * + default value Is ``100``.
+     * + default value Is ``50``.
+     * @param sexual_maturity 
+     * + default value Is ``3``.
      * @param water_color 
      * + default value Is ``'#0026ff'``.
      * @param env -
      * 
      * + default value Is ``null``.
    */
-   function world(map: object, height?: object, reproductive_isolation?: number, reproduce_rate?: number, dna_size?: object, natural_death?: object, water_color?: string, env?: object): object;
+   function world(map: object, height?: object, reproductive_isolation?: number, reproduce_rate?: number, dna_size?: object, natural_death?: object, sexual_maturity?: object, water_color?: string, env?: object): object;
 }
