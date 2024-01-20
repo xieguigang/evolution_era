@@ -92,6 +92,7 @@ Public Class Position : Implements IPoint3D
                 Else
                     If Creature.GetCharacter(BiologyCharacters.Cannibalism) > 0 Then
                         ' eat another
+                        Creature.Eat(another.Creature)
                         another.Creature = Creature
                         Creature = Nothing
                     Else
@@ -99,7 +100,8 @@ Public Class Position : Implements IPoint3D
                     End If
                 End If
             Else
-                If Predation(another.Creature) Then
+                If Predation(another.Creature, world.predation_diff) Then
+                    Creature.Eat(another.Creature)
                     another.Creature = Creature
                     Creature = Nothing
                 End If
@@ -111,26 +113,26 @@ Public Class Position : Implements IPoint3D
         Return std.Abs(a.GetCharacter(BiologyCharacters.BodySize) - b.GetCharacter(BiologyCharacters.BodySize))
     End Function
 
-    Private Function Predation(another As Creature) As Boolean
+    Private Function Predation(another As Creature, differ As Integer) As Boolean
         Dim electricalShock = Creature.GetCharacter(BiologyCharacters.ElectricalShock)
 
         If electricalShock > another.GetCharacter(BiologyCharacters.AntiElectricalShock) Then
-            Return BodySizeDifference(Creature, another) < 1
+            Return BodySizeDifference(Creature, another) < differ
         End If
 
         Dim toxin = Creature.GetCharacter(BiologyCharacters.Toxin)
 
         If toxin > another.GetCharacter(BiologyCharacters.Antitoxin) Then
-            Return BodySizeDifference(Creature, another) < 1
+            Return BodySizeDifference(Creature, another) < differ
         End If
 
         Dim tooth = Creature.GetCharacter(BiologyCharacters.Tooth)
 
         If tooth > another.GetCharacter(BiologyCharacters.OuterShell) Then
-            Return BodySizeDifference(Creature, another) < 1
+            Return BodySizeDifference(Creature, another) < differ
         End If
 
-        Return Creature.GetCharacter(BiologyCharacters.BodySize) > another.GetCharacter(BiologyCharacters.BodySize)
+        Return BodySizeDifference(Creature, another) < differ
     End Function
 
 End Class

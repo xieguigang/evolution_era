@@ -28,6 +28,7 @@ Public Class Creature
 
     Friend age As Integer
     Friend lifespan As Integer
+    Friend hunger As Integer
 
     Sub New()
     End Sub
@@ -43,6 +44,13 @@ Public Class Creature
         heredity = Empty(capacity).ToArray
     End Sub
 
+    Friend Sub Eat(ByRef another As Creature)
+        Dim energy As Double = another.GetCharacter(BiologyCharacters.BodySize)
+
+        hunger += energy
+        another = Nothing
+    End Sub
+
     Friend Function SetLifeSpan(lifespan As Integer, era As Integer) As Creature
         Me.lifespan = lifespan / (index.Count + 1)
         Me.age = 0
@@ -53,8 +61,9 @@ Public Class Creature
 
     Public Function TimeElapsed() As Boolean
         age += 1
+        hunger -= 1
 
-        If age >= lifespan Then
+        If (age >= lifespan) OrElse (hunger <= 0) Then
             Return True
         Else
             Return False

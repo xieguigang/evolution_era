@@ -19,7 +19,7 @@ Public Class DataWriter : Implements IDisposable
         Me.args = args
     End Sub
 
-    Public Function Record(time As Integer, creatures As IEnumerable(Of Creature), Optional getSize As Integer = -1) As Integer
+    Public Function Record(time As Integer, creatures As IEnumerable(Of Creature), ByRef Optional getSize As Integer = -1) As Integer
         Dim all As Creature() = creatures.ToArray
         Dim path As String = $"/data/{time}.dat"
 

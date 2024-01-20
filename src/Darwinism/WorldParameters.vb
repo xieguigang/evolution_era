@@ -20,6 +20,7 @@ Public Structure WorldParameters
     ''' age for sexual maturity
     ''' </summary>
     Dim sexual_maturity As Integer
+    Dim predation_diff As Integer
 
     Public Function GetObject() As Dictionary(Of String, String)
         Return New Dictionary(Of String, String) From {
@@ -27,7 +28,8 @@ Public Structure WorldParameters
             {"reproduce_rate", reproduce_rate},
             {"dna_capacity", dna_capacity},
             {"natural death", natural_death},
-            {"sexual_maturity", sexual_maturity}
+            {"sexual_maturity", sexual_maturity},
+            {"predation_diff", predation_diff}
         }
     End Function
 
