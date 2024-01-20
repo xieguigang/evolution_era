@@ -1,4 +1,5 @@
 ﻿
+Imports System.Drawing
 Imports System.IO
 Imports evolution_era
 Imports Microsoft.VisualBasic.CommandLine.Reflection
@@ -66,6 +67,20 @@ Public Module DataFile
         Next
 
         Return df
+    End Function
+
+    <ExportAPI("distributionMap")>
+    Public Function distributionMap(file As DataReader, era As Integer) As Image
+        Dim map As Image = file.GetWorldMap
+        Dim g As Graphics = Graphics.FromImage(map)
+
+        For Each c As CreatureData In file.GetEraCreatures(era)
+
+        Next
+
+        Call g.Flush()
+
+        Return map
     End Function
 
 End Module
