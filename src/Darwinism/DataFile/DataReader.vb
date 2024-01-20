@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
+Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
@@ -40,30 +41,18 @@ Public Class DataReader
             Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
                 .ByteOrder = ByteOrder.BigEndian
             }
-            Dim biology As BiologyCharacters
-            Dim level As Double
             Dim counts As New Dictionary(Of BiologyCharacters, Counter)
 
             For Each type As BiologyCharacters In BiologyCharacter.all_characters
                 Call counts.Add(type, New Counter)
             Next
 
-            Dim pop_size As Integer = rd.ReadInt32
-
-            Do While Not rd.EndOfStream
-                rd.ReadInt32() ' guid
-                rd.ReadInt32s(rd.ReadInt32) ' parent lineage
-                rd.ReadInt32() ' era
-                rd.ReadInt32() ' age
-                rd.ReadInt32() ' lifespan
-
-                For j As Integer = 1 To dna_size
-                    biology = rd.ReadInt64
-                    level = rd.ReadDouble
-                    counts(biology).total += level
-                    counts(biology).n += 1
+            For Each c In GetCreatures(rd)
+                For Each chr As BiologyCharacter In c.heredity
+                    counts(chr.Character).total += chr.Level
+                    counts(chr.Character).n += 1
                 Next
-            Loop
+            Next
 
             Yield BiologyCharacter.all_characters _
                 .Select(Function(a) counts(a).average) _
@@ -71,8 +60,94 @@ Public Class DataReader
         Next
     End Function
 
-    Public Function CreatureMatrix() As DataFrame
+    Private Iterator Function GetCreatures(rd As BinaryDataReader) As IEnumerable(Of (
+        guid As Integer, parent As Integer(),
+        era As Integer, age As Integer, lifespan As Integer,
+        heredity As BiologyCharacter()
+    ))
+        Dim pop_size As Integer = rd.ReadInt32
+        Dim biology As BiologyCharacters
+        Dim level As Double
 
+        For i As Integer = 0 To pop_size - 1
+            Dim guid = rd.ReadInt32() ' guid
+            Dim parent = rd.ReadInt32s(rd.ReadInt32) ' parent lineage
+            Dim era = rd.ReadInt32() ' era
+            Dim age = rd.ReadInt32() ' age
+            Dim lifespan = rd.ReadInt32() ' lifespan
+            Dim heredity As BiologyCharacter() = New BiologyCharacter(dna_size - 1) {}
+
+            For j As Integer = 0 To dna_size - 1
+                biology = rd.ReadInt64
+                level = rd.ReadDouble
+                heredity(i) = New BiologyCharacter(biology, level)
+            Next
+
+            Yield (guid, parent, era, age, lifespan, heredity)
+        Next
+    End Function
+
+    Public Function CreatureMatrix() As DataFrame
+        Dim characters As New Dictionary(Of BiologyCharacters, List(Of Double))
+        Dim era As New List(Of Integer)
+        Dim creature_id As New List(Of String)
+        Dim obj_index As New Index(Of String)
+
+        For Each character As BiologyCharacters In BiologyCharacter.all_characters
+            Call characters.Add(character, New List(Of Double))
+        Next
+
+        For Each i As Integer In Tqdm.Wrap(Enumerable.Range(0, time).ToArray, useColor:=True)
+            Dim path As String = $"/data/{i}.dat"
+            Dim s As Stream = bin.OpenFile(path, FileMode.Open, FileAccess.Read)
+            Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
+                .ByteOrder = ByteOrder.BigEndian
+            }
+
+            For Each c In GetCreatures(rd)
+                Dim obj_id As String = $"{c.era} - {c.guid}"
+
+                ' has already been added
+                If obj_id Like obj_index Then
+                    Continue For
+                Else
+                    obj_index.Add(obj_id)
+                End If
+
+                era.Add(c.era)
+                creature_id.Add(c.guid)
+
+                Dim character_groups = c.heredity _
+                    .GroupBy(Function(ci) ci.Character) _
+                    .ToDictionary(Function(ci) ci.Key,
+                                  Function(ci)
+                                      Return ci.ToArray
+                                  End Function)
+
+                For Each character As BiologyCharacters In BiologyCharacter.all_characters
+                    If character_groups.ContainsKey(character) Then
+                        Call characters(character).Add(Aggregate ci As BiologyCharacter
+                                                       In character_groups(character)
+                                                       Into Sum(ci.Level))
+                    Else
+                        Call characters(character).Add(0)
+                    End If
+                Next
+            Next
+        Next
+
+        Dim df As New DataFrame With {
+            .rownames = creature_id.ToArray,
+            .features = New Dictionary(Of String, FeatureVector)
+        }
+
+        Call df.add("Era", era)
+
+        For Each character As BiologyCharacters In characters.Keys
+            Call df.add(character.Description, characters(character))
+        Next
+
+        Return df
     End Function
 
     Private Class Counter

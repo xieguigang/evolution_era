@@ -22,6 +22,11 @@
         Level = 0
     End Sub
 
+    Sub New(c As BiologyCharacters, level As Double)
+        Me._Level = level
+        Me._Character = c
+    End Sub
+
     Public Sub SetCharacter(c As BiologyCharacters, level As Double)
         Me._Level = level
         Me._Character = c
