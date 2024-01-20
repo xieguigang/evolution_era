@@ -233,7 +233,10 @@ Public Class Creature
 
         Me.energy /= 2
 
-        Return New Creature(newOne) With {.parent = {Me.GetHashCode}}
+        Return New Creature(newOne) With {
+            .parent = {Me.GetHashCode},
+            .energy = energy
+        }
     End Function
 
 End Class
