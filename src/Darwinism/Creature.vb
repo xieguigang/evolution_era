@@ -21,6 +21,11 @@ Public Class Creature
     Friend parent As Integer()
     Friend ReadOnly guid As Integer = Me.GetHashCode
 
+    ''' <summary>
+    ''' the era time of current creature was born
+    ''' </summary>
+    Friend era As Integer
+
     Dim age As Integer
     Dim lifespan As Integer
 
@@ -38,9 +43,10 @@ Public Class Creature
         heredity = Empty(capacity).ToArray
     End Sub
 
-    Friend Function SetLifeSpan(lifespan As Integer) As Creature
+    Friend Function SetLifeSpan(lifespan As Integer, era As Integer) As Creature
         Me.lifespan = lifespan / (index.Count + 1)
         Me.age = 0
+        Me.era = era
 
         Return Me
     End Function
@@ -105,13 +111,13 @@ Public Class Creature
             .ToArray
     End Function
 
-    Public Function Reproduce(another As Creature, args As WorldParameters) As Creature
+    Public Function Reproduce(another As Creature, era As Integer, args As WorldParameters) As Creature
         Dim sexualReproduction As Double = Me.GetCharacter(BiologyCharacters.SexualReproduction)
 
         If sexualReproduction = 0.0 Then
             ' asexual
             ' only mutation happends
-            Return Mutation(0.1).SetLifeSpan(args.natural_death)
+            Return Mutation(0.1).SetLifeSpan(args.natural_death, era)
         Else
             ' test reproductive isolation
             If another Is Nothing OrElse another.GetCharacter(BiologyCharacters.SexualReproduction) <= 0 Then
@@ -123,7 +129,7 @@ Public Class Creature
 
             If similarity > args.reproductive_isolation Then
                 ' could be combine and create new one: mutation and crossover
-                Return Crossover(newOne:=Mutation(sexualReproduction), another).SetLifeSpan(args.natural_death)
+                Return Crossover(newOne:=Mutation(sexualReproduction), another).SetLifeSpan(args.natural_death, era)
             Else
                 ' reproductive isolation
                 Return Nothing

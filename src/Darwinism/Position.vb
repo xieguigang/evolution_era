@@ -24,9 +24,9 @@ Public Class Position : Implements IPoint3D
         Return $"{label} - {Geography.Description} ({X},{Y},{Z})"
     End Function
 
-    Public Sub TryMoveTo(another As Position, nearby As Position(), world As WorldParameters)
+    Public Sub TryMoveTo(another As Position, nearby As Position(), era As Integer, world As WorldParameters)
         If TestMove(another, Creature) Then
-            Call DoMove(another, nearby, world)
+            Call DoMove(another, nearby, era, world)
         End If
     End Sub
 
@@ -56,11 +56,11 @@ Public Class Position : Implements IPoint3D
         Return False
     End Function
 
-    Private Sub DoMove(another As Position, nearby As Position(), world As WorldParameters)
+    Private Sub DoMove(another As Position, nearby As Position(), era As Integer, world As WorldParameters)
         If another.Creature Is Nothing Then
             If rand.NextDouble < world.reproduce_rate Then
                 ' try to reproduce new one
-                another.Creature = Creature.Reproduce(another:=Nothing, world)
+                another.Creature = Creature.Reproduce(another:=Nothing, era, world)
             Else
                 ' move to another position
                 another.Creature = Creature
@@ -74,7 +74,7 @@ Public Class Position : Implements IPoint3D
             If same_species Then
                 If rand.NextDouble < world.reproduce_rate Then
                     ' do reproduce
-                    Dim newOne As Creature = Creature.Reproduce(another.Creature, world)
+                    Dim newOne As Creature = Creature.Reproduce(another.Creature, era, world)
 
                     If Not newOne Is Nothing Then
                         ' check for empty slot

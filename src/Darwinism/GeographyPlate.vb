@@ -55,13 +55,13 @@ Public Class GeographyPlate
             characters(0).SetCharacter(BiologyCharacters.FishFin, 1)
         End If
 
-        position.Creature = New Creature(characters).SetLifeSpan(world.natural_death)
+        position.Creature = New Creature(characters).SetLifeSpan(world.natural_death, era:=0)
     End Sub
 
     ''' <summary>
     ''' run a loop
     ''' </summary>
-    Public Sub TimeElapsed()
+    Public Sub TimeElapsed(era As Integer)
         For Each layer As Grid(Of Position) In spatial.ZLayers
             For Each point As Position In layer.EnumerateData
                 If point.Creature Is Nothing Then
@@ -79,7 +79,7 @@ Public Class GeographyPlate
                     .ToArray
                 Dim tryOne As Position = nearby.Random
 
-                Call point.TryMoveTo(another:=tryOne, nearby, world)
+                Call point.TryMoveTo(another:=tryOne, nearby, era, world)
             Next
         Next
     End Sub
