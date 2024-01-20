@@ -37,6 +37,8 @@ Public Class GeographyPlate
                         Else
                             c.Geography = GeographyType.Land
                         End If
+                    Else
+                        c.Geography = GeographyType.Air
                     End If
                 Next
             Next
