@@ -25,12 +25,14 @@ Public Module Era
                           Optional reproductive_isolation As Double = 0.9,
                           Optional reproduce_rate As Double = 0.5,
                           Optional dna_size As Integer = 5,
+                          Optional natural_death As Integer = 100,
                           Optional env As Environment = Nothing) As Object
 
         Dim args As New WorldParameters With {
             .reproduce_rate = reproduce_rate,
             .reproductive_isolation = reproductive_isolation,
-            .dna_capacity = dna_size
+            .dna_capacity = dna_size,
+            .natural_death = natural_death
         }
         Dim dims As Integer() = CLRVector.asInteger(size)
 

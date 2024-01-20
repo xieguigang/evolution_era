@@ -21,6 +21,9 @@ Public Class Creature
     Friend parent As Integer()
     Friend ReadOnly guid As Integer = Me.GetHashCode
 
+    Dim age As Integer
+    Dim lifespan As Integer
+
     Sub New()
     End Sub
 
@@ -34,6 +37,23 @@ Public Class Creature
     Sub New(capacity As Integer)
         heredity = Empty(capacity).ToArray
     End Sub
+
+    Friend Function SetLifeSpan(lifespan As Integer) As Creature
+        Me.lifespan = lifespan / (index.Count + 1)
+        Me.age = 0
+
+        Return Me
+    End Function
+
+    Public Function TimeElapsed() As Boolean
+        age += 1
+
+        If age >= lifespan Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     Public Overrides Function ToString() As String
         Return $"{guid} - {index.Keys.Select(Function(c) c.Description).JoinBy(",")}"
@@ -85,13 +105,13 @@ Public Class Creature
             .ToArray
     End Function
 
-    Public Function Reproduce(another As Creature, isolation As Double) As Creature
+    Public Function Reproduce(another As Creature, args As WorldParameters) As Creature
         Dim sexualReproduction As Double = Me.GetCharacter(BiologyCharacters.SexualReproduction)
 
         If sexualReproduction = 0.0 Then
             ' asexual
             ' only mutation happends
-            Return Mutation(0.1)
+            Return Mutation(0.1).SetLifeSpan(args.natural_death)
         Else
             ' test reproductive isolation
             If another Is Nothing OrElse another.GetCharacter(BiologyCharacters.SexualReproduction) <= 0 Then
@@ -101,9 +121,9 @@ Public Class Creature
 
             Dim similarity As Double = Me.Similarity(another)
 
-            If similarity > isolation Then
+            If similarity > args.reproductive_isolation Then
                 ' could be combine and create new one: mutation and crossover
-                Return Crossover(newOne:=Mutation(sexualReproduction), another)
+                Return Crossover(newOne:=Mutation(sexualReproduction), another).SetLifeSpan(args.natural_death)
             Else
                 ' reproductive isolation
                 Return Nothing
@@ -118,6 +138,7 @@ Public Class Creature
             Dim character As BiologyCharacter = newOne.index(inheritance.Character)
             Dim newLevel As Double = (character.Level + inheritance.Level) / 2
 
+            ' just update character levels
             character.Level = newLevel
         Else
             ' add new one

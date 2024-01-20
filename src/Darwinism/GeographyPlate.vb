@@ -55,7 +55,7 @@ Public Class GeographyPlate
             characters(0).SetCharacter(BiologyCharacters.FishFin, 1)
         End If
 
-        position.Creature = New Creature(characters)
+        position.Creature = New Creature(characters).SetLifeSpan(world.natural_death)
     End Sub
 
     ''' <summary>
@@ -65,6 +65,11 @@ Public Class GeographyPlate
         For Each layer As Grid(Of Position) In spatial.ZLayers
             For Each point As Position In layer.EnumerateData
                 If point.Creature Is Nothing Then
+                    Continue For
+                End If
+                If point.Creature.TimeElapsed Then
+                    ' natural_death: age increased to life span
+                    point.Creature = Nothing
                     Continue For
                 End If
 
@@ -100,12 +105,14 @@ Public Structure WorldParameters
     Dim reproductive_isolation As Double
     Dim reproduce_rate As Double
     Dim dna_capacity As Integer
+    Dim natural_death As Integer
 
     Public Function GetObject() As Dictionary(Of String, String)
         Return New Dictionary(Of String, String) From {
             {"reproductive_isolation", reproductive_isolation},
             {"reproduce_rate", reproduce_rate},
-            {"dna_capacity", dna_capacity}
+            {"dna_capacity", dna_capacity},
+            {"natural death", natural_death}
         }
     End Function
 
