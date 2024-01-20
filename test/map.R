@@ -8,6 +8,6 @@ let result = Analysis::open(file = "./demo.dat");
 
 for(era in tqdm(0:1000)) {
     bitmap(file = `./dist_maps/${era}.png`) {
-        distributionMap(result, era);
+        distributionMap(file = result, era = era);
     }
 }
