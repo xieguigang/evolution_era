@@ -19,6 +19,9 @@ declare namespace Analysis {
    */
    function creatures(file: object): any;
    /**
+   */
+   function distributionMap(file: object, era: object): object;
+   /**
     * open the simulation result file
     * 
     * 
