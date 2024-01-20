@@ -8,4 +8,7 @@ declare namespace evolution_era {
       */
       function onLoad(): object;
    }
+   /**
+   */
+   function defaultWorldMap(): object;
 }
