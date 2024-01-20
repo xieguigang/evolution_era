@@ -74,7 +74,7 @@ Public Module Era
         Call save.Record(0, reader.GetCreatures)
 
         For Each i As Integer In Tqdm.Wrap(Enumerable.Range(1, time + 1).ToArray, useColor:=True)
-            Call world.TimeElapsed()
+            Call world.TimeElapsed(era:=i)
             Call save.Record(i, reader.GetCreatures)
         Next
 
