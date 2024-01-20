@@ -48,4 +48,24 @@ Public Module DataFile
         Return df
     End Function
 
+    ''' <summary>
+    ''' get all creatures from the simulation result
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <returns></returns>
+    <ExportAPI("creatures")>
+    Public Function creatures(file As DataReader) As Object
+        Dim mat = file.CreatureMatrix
+        Dim df As New dataframe With {
+            .columns = New Dictionary(Of String, Array),
+            .rownames = mat.rownames
+        }
+
+        For Each name As String In mat.featureNames
+            Call df.add(name, mat(name).vector)
+        Next
+
+        Return df
+    End Function
+
 End Module
