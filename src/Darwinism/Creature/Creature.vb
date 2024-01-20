@@ -131,6 +131,7 @@ Public Class Creature
 
     Public Function Reproduce(another As Creature, era As Integer, args As WorldParameters) As Creature
         Dim sexualReproduction As Double = Me.GetCharacter(BiologyCharacters.SexualReproduction)
+        Dim parthenogenesis As Double = Me.GetCharacter(BiologyCharacters.Parthenogenesis)
 
         If age < args.sexual_maturity Then
             Return Nothing
@@ -144,6 +145,11 @@ Public Class Creature
             ' test reproductive isolation
             If another Is Nothing OrElse another.GetCharacter(BiologyCharacters.SexualReproduction) <= 0 Then
                 ' can not combine and create new
+
+                If parthenogenesis > 0 Then
+                    Return Mutation(0.1).SetLifeSpan(args.natural_death, era)
+                End If
+
                 Return Nothing
             End If
 

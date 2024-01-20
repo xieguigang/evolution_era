@@ -39,4 +39,5 @@
     ''' is zero, only mutation will happends when do reproduction
     ''' </summary>
     SexualReproduction
+    Parthenogenesis
 End Enum
