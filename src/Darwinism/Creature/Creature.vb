@@ -145,7 +145,7 @@ Public Class Creature
             ' test reproductive isolation
             If another Is Nothing OrElse another.GetCharacter(BiologyCharacters.SexualReproduction) <= 0 Then
                 ' can not combine and create new
-
+                ' but has ability for parthenogenesis?
                 If parthenogenesis > 0 Then
                     Return Mutation(0.1).SetLifeSpan(args.natural_death, era)
                 End If
