@@ -114,6 +114,10 @@ Public Class Creature
     Public Function Reproduce(another As Creature, era As Integer, args As WorldParameters) As Creature
         Dim sexualReproduction As Double = Me.GetCharacter(BiologyCharacters.SexualReproduction)
 
+        If age < args.sexual_maturity Then
+            Return Nothing
+        End If
+
         If sexualReproduction = 0.0 Then
             ' asexual
             ' only mutation happends
@@ -128,6 +132,10 @@ Public Class Creature
             Dim similarity As Double = Me.Similarity(another)
 
             If similarity > args.reproductive_isolation Then
+                If another.age < args.sexual_maturity Then
+                    Return Nothing
+                End If
+
                 ' could be combine and create new one: mutation and crossover
                 Return Crossover(newOne:=Mutation(sexualReproduction), another).SetLifeSpan(args.natural_death, era)
             Else

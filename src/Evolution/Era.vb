@@ -22,8 +22,9 @@ Public Module Era
                           Optional height As Integer = 3,
                           Optional reproductive_isolation As Double = 0.9,
                           Optional reproduce_rate As Double = 0.5,
-                          Optional dna_size As Integer = 5,
-                          Optional natural_death As Integer = 100,
+                          Optional dna_size As Integer = 6,
+                          Optional natural_death As Integer = 50,
+                          Optional sexual_maturity As Integer = 3,
                           Optional water_color As String = "#0026ff",
                           Optional env As Environment = Nothing) As Object
 
@@ -31,7 +32,8 @@ Public Module Era
             .reproduce_rate = reproduce_rate,
             .reproductive_isolation = reproductive_isolation,
             .dna_capacity = dna_size,
-            .natural_death = natural_death
+            .natural_death = natural_death,
+            .sexual_maturity = sexual_maturity
         }
 
         Return New GeographyPlate(args, map, height:=height, water:=water_color)
