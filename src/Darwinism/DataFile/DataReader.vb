@@ -80,7 +80,7 @@ Public Class DataReader
             For j As Integer = 0 To dna_size - 1
                 biology = rd.ReadInt64
                 level = rd.ReadDouble
-                heredity(i) = New BiologyCharacter(biology, level)
+                heredity(j) = New BiologyCharacter(biology, level)
             Next
 
             Yield (guid, parent, era, age, lifespan, heredity)
