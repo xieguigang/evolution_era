@@ -61,13 +61,16 @@ Public Module Era
 
         Dim save As New DataWriter(buf.TryCast(Of Stream), world.Arguments)
         Dim reader As New DataAdapter(world)
+        Dim bar As Tqdm.ProgressBar = Nothing
+        Dim pop_size As Integer = 0
 
         Call world.Init()
         Call save.Record(0, reader.GetCreatures)
 
-        For Each i As Integer In Tqdm.Wrap(Enumerable.Range(1, time + 1).ToArray, useColor:=True)
+        For Each i As Integer In Tqdm.Wrap(Enumerable.Range(1, time + 1).ToArray, bar:=bar, width:=60, useColor:=True)
             Call world.TimeElapsed(era:=i)
-            Call save.Record(i, reader.GetCreatures)
+            Call save.Record(i, reader.GetCreatures, getSize:=pop_size)
+            Call bar.SetLabel($"population size: {pop_size}")
         Next
 
         Call save.Dispose()

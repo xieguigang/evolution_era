@@ -19,11 +19,12 @@ Public Class DataWriter : Implements IDisposable
         Me.args = args
     End Sub
 
-    Public Sub Record(time As Integer, creatures As IEnumerable(Of Creature))
+    Public Function Record(time As Integer, creatures As IEnumerable(Of Creature), Optional getSize As Integer = -1) As Integer
         Dim all As Creature() = creatures.ToArray
         Dim path As String = $"/data/{time}.dat"
 
-        Call populationSize.Add(all.Length)
+        getSize = all.Length
+        populationSize.Add(all.Length)
 
         Dim s As Stream = bin.OpenFile(path, FileMode.Create, FileAccess.Write)
         Dim wd As New BinaryDataWriter(s, Encodings.ASCII) With {
@@ -48,7 +49,9 @@ Public Class DataWriter : Implements IDisposable
 
         Call wd.Flush()
         Call wd.Dispose()
-    End Sub
+
+        Return all.Length
+    End Function
 
     Private Sub SaveMetaData()
         Call bin.WriteText({populationSize.ToArray.GetJson}, fileName:="/metadata/population_size.json")
