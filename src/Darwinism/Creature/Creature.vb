@@ -36,7 +36,7 @@ Public Class Creature
     ''' 1. keeps alive
     ''' 2. reproduce
     ''' </summary>
-    Friend energy As Integer = 50
+    Friend energy As Double = 100
 
     Sub New()
     End Sub
@@ -70,6 +70,7 @@ Public Class Creature
     Public Function TimeElapsed() As Boolean
         age += 1
         energy -= 1
+        energy += GetCharacter(BiologyCharacters.Photosynthesis)
 
         If (age >= lifespan) OrElse (energy <= 0) Then
             Return True
@@ -152,7 +153,7 @@ Public Class Creature
                 If another.age < args.sexual_maturity Then
                     Return Nothing
                 Else
-                    another.energy /= 2
+                    another.energy *= (3 / 4)
                 End If
 
                 ' could be combine and create new one: mutation and crossover
@@ -231,7 +232,7 @@ Public Class Creature
             newOne(pick) = New BiologyCharacter(newCharacter, 1)
         End If
 
-        Me.energy /= 2
+        Me.energy *= (3 / 4)
 
         Return New Creature(newOne) With {
             .parent = {Me.GetHashCode},

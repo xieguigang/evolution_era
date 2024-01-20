@@ -25,7 +25,10 @@
     ''' ability to enable move on <see cref="GeographyType.Water"/>
     ''' </summary>
     FishFin
-
+    ''' <summary>
+    ''' get energy from sum
+    ''' </summary>
+    Photosynthesis
     ''' <summary>
     ''' 
     ''' </summary>
