@@ -1,4 +1,6 @@
-﻿Public Class CreatureData
+﻿Imports System.Runtime.CompilerServices
+
+Public Class CreatureData
 
     Public Property Guid As Integer
     Public Property X As Integer
@@ -27,6 +29,12 @@
         Me.Heredity = heredity
     End Sub
 
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
+    Public Function GetTopCharacter() As BiologyCharacters
+        Return Heredity.OrderByDescending(Function(c) c.Level).First.Character
+    End Function
+
+    <MethodImpl(MethodImplOptions.AggressiveInlining)>
     Public Shared Widening Operator CType(data As (guid As Integer, xyz As Integer(), parent As Integer(),
             era As Integer, age As Integer, lifespan As Integer, energy As Double,
             heredity As BiologyCharacter())) As CreatureData

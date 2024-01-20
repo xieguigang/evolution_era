@@ -3,6 +3,8 @@ Imports System.Drawing
 Imports System.IO
 Imports evolution_era
 Imports Microsoft.VisualBasic.CommandLine.Reflection
+Imports Microsoft.VisualBasic.Imaging
+Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Components
@@ -69,13 +71,28 @@ Public Module DataFile
         Return df
     End Function
 
+    Private Iterator Function CharacterColors() As IEnumerable(Of (BiologyCharacters, Brush))
+        Dim characters = BiologyCharacter.all_characters.ToArray
+        Dim colors = Designer.GetColors("paper", characters.Length)
+
+        For i As Integer = 0 To characters.Length - 1
+            Yield (characters(i), New SolidBrush(colors(i)))
+        Next
+    End Function
+
     <ExportAPI("distributionMap")>
     Public Function distributionMap(file As DataReader, era As Integer) As Image
         Dim map As Image = file.GetWorldMap
         Dim g As Graphics = Graphics.FromImage(map)
 
-        For Each c As CreatureData In file.GetEraCreatures(era)
+        Static colors As Dictionary(Of BiologyCharacters, Brush) = CharacterColors() _
+            .ToDictionary(Function(c) c.Item1,
+                          Function(c)
+                              Return c.Item2
+                          End Function)
 
+        For Each c As CreatureData In file.GetEraCreatures(era)
+            Call g.DrawCircle(New PointF(c.X, c.Y), 2, colors(c.GetTopCharacter))
         Next
 
         Call g.Flush()
