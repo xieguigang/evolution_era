@@ -29,7 +29,14 @@ Public Class Creature
 
     Friend age As Integer
     Friend lifespan As Integer
-    Friend hunger As Integer = 50
+
+    ''' <summary>
+    ''' creature needs energy for:
+    ''' 
+    ''' 1. keeps alive
+    ''' 2. reproduce
+    ''' </summary>
+    Friend energy As Integer = 50
 
     Sub New()
     End Sub
@@ -46,9 +53,9 @@ Public Class Creature
     End Sub
 
     Friend Sub Eat(ByRef another As Creature)
-        Dim energy As Double = std.exp(another.GetCharacter(BiologyCharacters.BodySize) + 1)
+        Dim energy As Double = std.Exp(another.GetCharacter(BiologyCharacters.BodySize) + 1)
 
-        hunger += energy
+        Me.energy += energy
         another = Nothing
     End Sub
 
@@ -62,9 +69,9 @@ Public Class Creature
 
     Public Function TimeElapsed() As Boolean
         age += 1
-        hunger -= 1
+        energy -= 1
 
-        If (age >= lifespan) OrElse (hunger <= 0) Then
+        If (age >= lifespan) OrElse (energy <= 0) Then
             Return True
         Else
             Return False
@@ -144,6 +151,8 @@ Public Class Creature
             If similarity > args.reproductive_isolation Then
                 If another.age < args.sexual_maturity Then
                     Return Nothing
+                Else
+                    another.energy /= 2
                 End If
 
                 ' could be combine and create new one: mutation and crossover
@@ -213,6 +222,8 @@ Public Class Creature
                 character.SetCharacter(BiologyCharacters.None, 0)
             End If
         End If
+
+        Me.energy /= 2
 
         Return New Creature(newOne) With {.parent = {Me.GetHashCode}}
     End Function
