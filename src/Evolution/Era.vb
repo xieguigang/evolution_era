@@ -66,13 +66,17 @@ Public Module Era
         Dim bar As Tqdm.ProgressBar = Nothing
         Dim pop_size As Integer = 0
 
-        Call world.Init()
+        Call world.Init(era:=0)
         Call save.Record(0, reader.GetCreatures)
 
         For Each i As Integer In Tqdm.Wrap(Enumerable.Range(1, time + 1).ToArray, bar:=bar, width:=60, useColor:=True)
             Call world.TimeElapsed(era:=i)
             Call save.Record(i, reader.GetCreatures, getSize:=pop_size)
             Call bar.SetLabel($"population size: {pop_size}")
+
+            If pop_size <= 0 Then
+                Call world.Init(era:=i)
+            End If
         Next
 
         Call save.Dispose()

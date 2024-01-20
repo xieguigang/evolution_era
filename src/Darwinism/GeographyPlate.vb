@@ -50,7 +50,7 @@ Public Class GeographyPlate
         Me.spatial = Spatial3D(Of Position).CreateSpatial3D(Of Position)(points)
     End Sub
 
-    Public Sub Init()
+    Public Sub Init(era As Integer)
         Dim x As Integer = rand.NextInteger(size.Width)
         Dim y As Integer = rand.NextInteger(size.Height)
         Dim position As Position = spatial.GetData(x, y, z:=0)
@@ -62,7 +62,7 @@ Public Class GeographyPlate
             characters(0).SetCharacter(BiologyCharacters.FishFin, 1)
         End If
 
-        position.Creature = New Creature(characters).SetLifeSpan(world.natural_death, era:=0)
+        position.Creature = New Creature(characters).SetLifeSpan(world.natural_death, era:=era)
     End Sub
 
     ''' <summary>
