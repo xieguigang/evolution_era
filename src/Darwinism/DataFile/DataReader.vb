@@ -36,18 +36,13 @@ Public Class DataReader
     ''' <returns>a vector keeps the element order with <see cref="BiologyCharacter.all_characters"/></returns>
     Public Iterator Function BiologyCharacterAbundance() As IEnumerable(Of Double())
         For Each i As Integer In Tqdm.Wrap(Enumerable.Range(0, time).ToArray, useColor:=True)
-            Dim path As String = $"/data/{i}.dat"
-            Dim s As Stream = bin.OpenFile(path, FileMode.Open, FileAccess.Read)
-            Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
-                .ByteOrder = ByteOrder.BigEndian
-            }
             Dim counts As New Dictionary(Of BiologyCharacters, Counter)
 
             For Each type As BiologyCharacters In BiologyCharacter.all_characters
                 Call counts.Add(type, New Counter)
             Next
 
-            For Each c As CreatureData In GetCreatures(rd)
+            For Each c As CreatureData In GetEraCreatures(era:=i)
                 For Each chr As BiologyCharacter In c.Heredity
                     counts(chr.Character).total += chr.Level
                     counts(chr.Character).n += 1
@@ -89,6 +84,16 @@ Public Class DataReader
         Return (guid, xyz, parent, era, age, lifespan, energy, heredity)
     End Function
 
+    Public Function GetEraCreatures(era As Integer) As IEnumerable(Of CreatureData)
+        Dim path As String = $"/data/{era}.dat"
+        Dim s As Stream = bin.OpenFile(path, FileMode.Open, FileAccess.Read)
+        Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
+            .ByteOrder = ByteOrder.BigEndian
+        }
+
+        Return GetCreatures(rd)
+    End Function
+
     Public Function CreatureMatrix() As DataFrame
         Dim characters As New Dictionary(Of BiologyCharacters, List(Of Double))
         Dim era As New List(Of Integer)
@@ -100,13 +105,7 @@ Public Class DataReader
         Next
 
         For Each i As Integer In Tqdm.Wrap(Enumerable.Range(0, time).ToArray, useColor:=True)
-            Dim path As String = $"/data/{i}.dat"
-            Dim s As Stream = bin.OpenFile(path, FileMode.Open, FileAccess.Read)
-            Dim rd As New BinaryDataReader(s, Encodings.ASCII) With {
-                .ByteOrder = ByteOrder.BigEndian
-            }
-
-            For Each c As CreatureData In GetCreatures(rd)
+            For Each c As CreatureData In GetEraCreatures(era:=i)
                 Dim obj_id As String = $"{c.Era} - {c.Guid}"
 
                 ' has already been added
