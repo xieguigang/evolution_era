@@ -1,6 +1,8 @@
 require( evolution_era);
 
-let worldModel = Era::world(size = [200,200,3],reproductive.isolation = 0.8,
+
+let worldModel = Era::world(defaultWorldMap(),
+    reproductive.isolation = 0.8,
                           reproduce.rate = 0.45,
                           dna.size = 6,
                           natural.death = 30);
