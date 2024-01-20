@@ -7,7 +7,13 @@
     ''' body size(weight)
     ''' </summary>
     BodySize
+    ''' <summary>
+    ''' ability to enable move on <see cref="GeographyType.Air"/>
+    ''' </summary>
     Wing
+    ''' <summary>
+    ''' ability to enable move on <see cref="GeographyType.Land"/>
+    ''' </summary>
     Foot
     Tooth
     OuterShell
@@ -15,6 +21,9 @@
     Antitoxin
     ElectricalShock
     AntiElectricalShock
+    ''' <summary>
+    ''' ability to enable move on <see cref="GeographyType.Water"/>
+    ''' </summary>
     FishFin
 
     ''' <summary>
