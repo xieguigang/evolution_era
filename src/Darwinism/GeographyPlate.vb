@@ -22,6 +22,7 @@ Public Class GeographyPlate
         Dim c As Position
         Dim terrain As BitmapBuffer = BitmapBuffer.FromImage(map)
         Dim water_color As Color = water.TranslateColor
+        Dim size As Size = map.Size
 
         For x As Integer = 0 To size.Width
             For y As Integer = 0 To size.Height
