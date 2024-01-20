@@ -17,14 +17,15 @@ Public Class DataWriter : Implements IDisposable
     Dim disposedValue As Boolean
     Dim args As WorldParameters
 
+    Public Const WorldMapPath As String = "/metadata/worldMap.png"
+
     Sub New(file As Stream, args As WorldParameters)
         Me.bin = New StreamPack(file, meta_size:=1024 * 1024 * 32)
         Me.args = args
     End Sub
 
     Public Sub WriteWorldMap(map As Image)
-        Dim path As String = "/metadata/worldMap.png"
-        Dim s As Stream = bin.OpenFile(path, FileMode.OpenOrCreate, FileAccess.Write)
+        Dim s As Stream = bin.OpenFile(WorldMapPath, FileMode.OpenOrCreate, FileAccess.Write)
 
         Call map.Save(s, ImageFormat.Png)
         Call s.Flush()

@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Drawing
+Imports System.IO
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.ComponentModel.Collection
 Imports Microsoft.VisualBasic.Data.IO
@@ -28,6 +29,12 @@ Public Class DataReader
 
     Public Function GetPopulateSize() As Integer()
         Return Strings.Trim(bin.ReadText("/metadata/population_size.json")).LoadJSON(Of Integer())
+    End Function
+
+    Public Function GetWorldMap() As Image
+        Dim buf = bin.ReadBinary("/metadata/worldMap.png")
+        Dim map As Image = Image.FromStream(buf)
+        Return map
     End Function
 
     ''' <summary>
