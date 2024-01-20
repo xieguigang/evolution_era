@@ -24,8 +24,8 @@ Public Class GeographyPlate
         Dim water_color As Color = water.TranslateColor
         Dim size As Size = map.Size
 
-        For x As Integer = 0 To size.Width
-            For y As Integer = 0 To size.Height
+        For x As Integer = 0 To size.Width - 1
+            For y As Integer = 0 To size.Height - 1
                 For z As Integer = 0 To height
                     c = New Position(x, y, z)
                     points.Add(c)
