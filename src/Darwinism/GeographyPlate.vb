@@ -91,7 +91,9 @@ Public Class GeographyPlate
                     .ToArray
                 ' try move to top energy position
                 Dim tryOne As Position = nearby _
-                    .OrderByDescending(Function(c) c.energy) _
+                    .OrderByDescending(Function(c)
+                                           Return c.energy + If(c.Creature Is Nothing, 0, c.Creature.energy)
+                                       End Function) _
                     .First
 
                 Call point.TryMoveTo(another:=tryOne, nearby, era, world)
