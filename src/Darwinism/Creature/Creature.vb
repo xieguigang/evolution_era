@@ -69,7 +69,7 @@ Public Class Creature
 
     Public Function TimeElapsed() As Boolean
         age += 1
-        energy -= 1
+        energy -= GetCharacter(BiologyCharacters.BodySize)
         energy += GetCharacter(BiologyCharacters.Photosynthesis)
 
         If (age >= lifespan) OrElse (energy <= 0) Then

@@ -9,6 +9,7 @@ Public Class Position : Implements IPoint3D
     Public Property X As Integer Implements RasterPixel.X
     Public Property Y As Integer Implements RasterPixel.Y
     Public Property Geography As GeographyType
+    Public Property energy As Double = 100
 
     Sub New(x As Integer, y As Integer, z As Integer)
         Me.X = x
@@ -17,6 +18,17 @@ Public Class Position : Implements IPoint3D
 
         If z > 0 Then
             Geography = GeographyType.Air
+        End If
+    End Sub
+
+    Public Sub TimeElapsed(era As Integer)
+        If Not Creature Is Nothing Then
+            Creature.energy += 1
+            energy -= 1
+        End If
+
+        If energy < 100 Then
+            energy += 1
         End If
     End Sub
 
