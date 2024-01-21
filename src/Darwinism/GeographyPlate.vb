@@ -74,6 +74,8 @@ Public Class GeographyPlate
     Public Sub TimeElapsed(era As Integer)
         For Each layer As Grid(Of Position) In spatial.ZLayers
             For Each point As Position In layer.EnumerateData
+                Call point.TimeElapsed(era)
+
                 If point.Creature Is Nothing Then
                     Continue For
                 End If
@@ -87,7 +89,10 @@ Public Class GeographyPlate
                     .Query(point.X, point.Y, point.Z) _
                     .Where(Function(a) a IsNot point) _
                     .ToArray
-                Dim tryOne As Position = nearby.Random
+                ' try move to top energy position
+                Dim tryOne As Position = nearby _
+                    .OrderByDescending(Function(c) c.energy) _
+                    .First
 
                 Call point.TryMoveTo(another:=tryOne, nearby, era, world)
             Next
