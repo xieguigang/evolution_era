@@ -1,14 +1,14 @@
-﻿Imports System.Drawing
-Imports System.IO
+﻿Imports System.IO
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
 Imports Microsoft.VisualBasic.ComponentModel.Collection
+Imports Microsoft.VisualBasic.Data.Framework
 Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
 Imports Microsoft.VisualBasic.Linq
-Imports Microsoft.VisualBasic.Math.DataFrame
 Imports Microsoft.VisualBasic.Serialization.JSON
 Imports Microsoft.VisualBasic.Text
+Imports Image = Microsoft.VisualBasic.Imaging.Image
 
 Public Class DataReader
 

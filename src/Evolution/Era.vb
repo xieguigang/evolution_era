@@ -1,4 +1,3 @@
-Imports System.Drawing
 Imports System.IO
 Imports evolution_era
 Imports Microsoft.VisualBasic.ApplicationServices.Terminal.ProgressBar
@@ -7,6 +6,7 @@ Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Components
 Imports SMRUCC.Rsharp.Runtime.Interop
+Imports Image = Microsoft.VisualBasic.Imaging.Image
 
 <Package("Era")>
 Public Module Era

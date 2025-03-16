@@ -1,6 +1,4 @@
-﻿Imports System.Drawing
-Imports System.Drawing.Imaging
-Imports System.IO
+﻿Imports System.IO
 Imports Microsoft.VisualBasic.Data.IO
 Imports Microsoft.VisualBasic.DataStorage.HDSPack
 Imports Microsoft.VisualBasic.DataStorage.HDSPack.FileSystem
@@ -27,7 +25,7 @@ Public Class DataWriter : Implements IDisposable
     Public Sub WriteWorldMap(map As Image)
         Dim s As Stream = bin.OpenFile(WorldMapPath, FileMode.OpenOrCreate, FileAccess.Write)
 
-        Call map.Save(s, ImageFormat.Png)
+        Call map.Save(s, ImageFormats.Png)
         Call s.Flush()
         Call s.Dispose()
     End Sub

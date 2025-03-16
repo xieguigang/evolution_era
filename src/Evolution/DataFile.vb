@@ -5,6 +5,7 @@ Imports evolution_era
 Imports Microsoft.VisualBasic.CommandLine.Reflection
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.Drawing2D.Colors
+Imports Microsoft.VisualBasic.Imaging.Driver
 Imports Microsoft.VisualBasic.Scripting.MetaData
 Imports SMRUCC.Rsharp.Runtime
 Imports SMRUCC.Rsharp.Runtime.Components
@@ -83,7 +84,7 @@ Public Module DataFile
     <ExportAPI("distributionMap")>
     Public Function distributionMap(file As DataReader, era As Integer) As Image
         Dim map As Image = file.GetWorldMap
-        Dim g As Graphics = Graphics.FromImage(map)
+        Dim g As IGraphics = DriverLoad.CreateGraphicsDevice(map, driver:=Drivers.GDI)
 
         Static colors As Dictionary(Of BiologyCharacters, Brush) = CharacterColors() _
             .ToDictionary(Function(c) c.Item1,
@@ -97,7 +98,7 @@ Public Module DataFile
 
         Call g.Flush()
 
-        Return map
+        Return DirectCast(g, GdiRasterGraphics).ImageResource
     End Function
 
 End Module

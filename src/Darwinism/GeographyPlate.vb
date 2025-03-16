@@ -2,6 +2,7 @@ Imports System.Drawing
 Imports Microsoft.VisualBasic.Data.GraphTheory.GridGraph
 Imports Microsoft.VisualBasic.Imaging
 Imports Microsoft.VisualBasic.Imaging.BitmapImage
+Imports Image = Microsoft.VisualBasic.Imaging.Image
 Imports rand = Microsoft.VisualBasic.Math.RandomExtensions
 
 Public Class GeographyPlate
